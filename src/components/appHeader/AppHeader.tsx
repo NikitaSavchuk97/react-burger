@@ -27,13 +27,13 @@ function AppHeader() {
           <span className='pl-2'>Лента заказов</span>
         </Link>
 
-        <div className={appHeaderStyles.header__logo}>
+        <Link to='/' className={appHeaderStyles.header__logo}>
           <Logo />
-        </div>
+        </Link>
 
         <Link
           className={`${appHeaderStyles.header__link} text text_type_main-default pt-4 pr-5 pb-4`}
-          to='/orders'
+          to='/profile'
         >
           <ProfileIcon type='primary' />
           <span className='pl-2'>Личный кабинет</span>

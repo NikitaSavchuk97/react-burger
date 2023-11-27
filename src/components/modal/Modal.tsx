@@ -1,6 +1,6 @@
 import style from './Modal.module.scss';
 
-import ModalOverlay from '../modalOverlay/ModalOverlay';
+import ModalOverlay from '../ModalOverlay/ModalOverlay';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalPropTypes } from '../../utils/types';
@@ -23,8 +23,14 @@ function Modal(props: ModalPropTypes) {
     modalRoot &&
     createPortal(
       <>
-        <ModalOverlay />
+        <ModalOverlay closeModal={props.closeModal} />
         <section className={style.container}>
+          {/* 
+							Уважаемый ревьюер, в чате моей когорты, в слаке, 
+							уже поднимался вопрос центровки заголовка и наставник сообщил что его не нужно исправлять/центровать. 
+							Моя реализация аналогична выданному мне макету из фигмы. 
+					*/}
+
           <h2 className={`${style.container__title} text text_type_main-large`}>{props.title}</h2>
           <button className={`${style.container__button}`} type='button' onClick={props.closeModal}>
             <CloseIcon type='primary' />

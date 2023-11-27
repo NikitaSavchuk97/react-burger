@@ -1,4 +1,4 @@
-import ProductList from '../productList/ProductList';
+import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
 import { BurgerIngredientsPropTypes } from '../../utils/types';
 

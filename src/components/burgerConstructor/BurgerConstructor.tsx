@@ -1,4 +1,5 @@
 import style from './BurgerConstructor.module.scss';
+import bunSvg from '../../images/bunSvg.svg';
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -19,7 +20,7 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
           isLocked={true}
           text='Краторная булка N-200i (верх)'
           price={200}
-          thumbnail={''}
+          thumbnail={bunSvg}
         />
         <div className={`${style.section__content} mt-4 mb-4`}>
           {props.ingredients.map(
@@ -41,7 +42,7 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
           isLocked={true}
           text='Краторная булка N-200i (низ)'
           price={200}
-          thumbnail={''}
+          thumbnail={bunSvg}
         />
       </div>
 

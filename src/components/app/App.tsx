@@ -1,13 +1,14 @@
 import axios from 'axios';
 import style from './App.module.scss';
-import AppHeader from '../appHeader/AppHeader';
-import BurgerConstructor from '../burgerConstructor/BurgerConstructor';
-import BurgerIngredients from '../burgerIngredients/BurgerIngredients';
-import Modal from '../modal/Modal';
+import AppHeader from '../AppHeader/AppHeader';
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
+import Modal from '../Modal/Modal';
 
-import IngredientDetails from '../ingredientDetails/IngredientDetails';
-import OrderDetails from '../orderDetails/OrderDetails';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import { useEffect, useState } from 'react';
+import { useModal } from '../../hooks/useModal';
 import { ItemPropTypes } from '../../utils/types';
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
     type: null,
     data: null,
   });
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const [ingredients, setIngredients] = useState<Array<ItemPropTypes>>([]);
   const BASE_URL = 'https://norma.nomoreparties.space';
 
@@ -27,12 +28,12 @@ function App() {
         setIngredients(res.data.data);
       })
       .catch((error) => {
-        throw new Error(error);
+        console.log(error);
       });
   };
 
-  const closeModal = () => {
-    setModalVisible(false);
+  const handleCloseModal = () => {
+    closeModal();
     setModalInfo({
       title: null,
       type: null,
@@ -40,11 +41,11 @@ function App() {
     });
   };
 
-  const openModal = ({ type, id }: { type: string; id: string }) => {
+  const handleOpenModal = ({ type, id }: { type: string; id: string }) => {
     const itemData = ingredients.find((item) => item._id === id);
     const title = type === 'ingredient' ? 'Детали ингридиента' : '';
     setModalInfo({ title: title, type: type, data: itemData });
-    setModalVisible(true);
+    openModal();
   };
 
   useEffect(() => {
@@ -55,12 +56,12 @@ function App() {
     <section className={`${style.app} pt-10 pb-10`}>
       <AppHeader />
       <main className={style.app__wrapper}>
-        <BurgerIngredients ingredients={ingredients} openModal={openModal} />
-        <BurgerConstructor ingredients={ingredients} openModal={openModal} />
+        <BurgerIngredients ingredients={ingredients} openModal={handleOpenModal} />
+        <BurgerConstructor ingredients={ingredients} openModal={handleOpenModal} />
       </main>
 
-      {modalVisible && (
-        <Modal title={modalInfo.title} closeModal={closeModal}>
+      {isModalOpen && (
+        <Modal title={modalInfo.title} closeModal={handleCloseModal}>
           {modalInfo.type === 'ingredient' ? (
             <IngredientDetails modalInfo={modalInfo} />
           ) : (

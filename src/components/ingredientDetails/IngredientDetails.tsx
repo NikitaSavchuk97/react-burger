@@ -9,7 +9,7 @@ function IngredientDetails(props: IngredientDetailsPropTypes) {
   return (
     <section className={style.container}>
       <img className='pb-4' src={props.modalInfo.data.image} alt={props.modalInfo.data.name} />
-      <h3 style={{ textAlign: 'center' }} className='pb-8 text text_type_main-default'>
+      <h3 className={`${style.container__title} pb-8 text text_type_main-default`}>
         {props.modalInfo.data.name}
       </h3>
 
