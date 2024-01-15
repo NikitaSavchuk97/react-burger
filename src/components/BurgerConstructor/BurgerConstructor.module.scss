@@ -1,21 +1,40 @@
 .section {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   max-width: 600px;
   width: 100%;
-  height: 912px;
+  position: relative;
 
-  &__wrapper {
+  &__list {
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    list-style-type: none;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-
-    height: 440px;
+    min-height: 260px;
+    max-height: 440px;
     overflow: hidden;
     overflow-y: scroll;
+
+    &__empty {
+      justify-content: center;
+      align-items: center;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
 
     gap: 10px;
 
@@ -33,8 +52,21 @@
   }
 
   &__order {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
     display: flex;
     justify-content: flex-end;
+  }
+
+  &__element {
+    max-height: 80px;
+    max-width: 490px;
+  }
+
+  &__title {
+    width: min-content;
   }
 
   &__price {

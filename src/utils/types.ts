@@ -1,28 +1,24 @@
 export interface ModalPropTypes {
-  title: string;
-  closeModal: () => void;
   children: React.ReactNode;
 }
 
 export interface BurgerIngredientsPropTypes {
-  ingredients: Array<ItemPropTypes>;
   openModal: ({ type, id }: { type: string; id: string }) => void;
 }
 
 export interface ProductListPropTypes {
+  refProp: any;
   title: string;
   type: string;
   id: string;
-  ingredients: Array<ItemPropTypes>;
-  openModal: ({ type, id }: { type: string; id: string }) => void;
 }
 
 export interface BurgerConstructorPropTypes {
-  ingredients: Array<ItemPropTypes>;
   openModal: ({ type, id }: { type: string; id: string }) => void;
 }
 
 export interface ItemPropTypes {
+  removeId: number;
   calories: number;
   carbohydrates: number;
   fat: number;
