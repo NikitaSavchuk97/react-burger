@@ -3,18 +3,19 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import { ProductListPropTypes, ItemPropTypes } from '../../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
-import { openModal } from '../../redux/slices/modalSlice';
 import { useDrag } from 'react-dnd';
 
 function ProductList(props: ProductListPropTypes) {
   const dispatch = useDispatch();
   const { orderCurrentList } = useSelector((state: any) => state.ingredientsCurrentSlice);
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
+
   const onItemClick = (e: any) => {
+    console.log(typeof e);
     const targetElement = e.target.closest('section');
     const itemData = ingredients.find((item: ItemPropTypes) => item._id === targetElement.id);
     dispatch(addIngredientDetails(itemData));
-    dispatch(openModal({ type: 'ingredient', title: 'Детали ингридиента' }));
+    props.openModal({ type: 'ingredient', id: targetElement.id });
   };
 
   const DraggableItem: any = ({ item, amount }: { item: any; amount: number }) => {

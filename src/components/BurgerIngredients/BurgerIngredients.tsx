@@ -1,10 +1,14 @@
 import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch} from 'react-redux';
-import { getIngredients } from '../../redux/slices/ingredientsSlice';
+import { useDispatch } from 'react-redux';
+import { getIngredients } from '../../redux/actions/getIngredients';
 
-function BurgerIngredients() {
+export interface BurgerIngredientsPropTypes {
+  openModal: ({ type, id }: { type: string; id: string }) => void;
+}
+
+function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   const dispatch = useDispatch<any>();
 
   const buns = useRef<HTMLInputElement>(null);
@@ -69,9 +73,21 @@ function BurgerIngredients() {
       </nav>
 
       <div className={`${style.section__content}`} onScroll={getListCoords}>
-        <ProductList title='Булки' type='bun' id='bun' refProp={buns} />
-        <ProductList title='Соусы' type='sauce' id='sauce' refProp={sauces} />
-        <ProductList title='Начинки' type='main' id='main' refProp={mains} />
+        <ProductList title='Булки' type='bun' id='bun' refProp={buns} openModal={props.openModal} />
+        <ProductList
+          title='Соусы'
+          type='sauce'
+          id='sauce'
+          refProp={sauces}
+          openModal={props.openModal}
+        />
+        <ProductList
+          title='Начинки'
+          type='main'
+          id='main'
+          refProp={mains}
+          openModal={props.openModal}
+        />
       </div>
     </section>
   );

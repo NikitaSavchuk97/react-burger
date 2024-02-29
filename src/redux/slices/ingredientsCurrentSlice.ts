@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { postOrder } from '../actions/postOrder';
 
 interface InitialState {
-  bunCurrent: null | object;
+  bunCurrent: Array<object>;
   ingredientsCurrent: Array<object>;
   orderCurrentList: Array<object>;
   totalPrice: number;
@@ -26,13 +27,17 @@ export const ingredientsCurrentSlice = createSlice({
     addToOrderList(state, action) {
       state.orderCurrentList = action.payload;
     },
-    removeFromOrderList(state, action) {
-      state.bunCurrent = action.payload;
+    clearOrderList(state) {
+      state.bunCurrent = [];
+      state.ingredientsCurrent = [];
+      state.orderCurrentList = [];
+      state.totalPrice = 0;
+      state.status = 'loading';
     },
     addIngredientsCurrent(state, action) {
       state.ingredientsCurrent.push({
         ...action.payload.item,
-        removeId: action.payload.item._id + action.payload.ingredientsCurrent.length,
+        removeId: action.payload.removeId,
       });
     },
     removeIngredientsCurrent(state, action) {
@@ -45,12 +50,25 @@ export const ingredientsCurrentSlice = createSlice({
       state.totalPrice = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postOrder.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(postOrder.fulfilled, (state, action) => {
+        console.log('{З}{а}{к}{а}{з}: ', action.payload);
+        state.status = 'success';
+      })
+      .addCase(postOrder.rejected, (state) => {
+        state.status = 'error';
+      });
+  },
 });
 
 export const {
   addBunCurrent,
   addToOrderList,
-  removeFromOrderList,
+  clearOrderList,
   addIngredientsCurrent,
   removeIngredientsCurrent,
   setTotalPrice,

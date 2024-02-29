@@ -1,10 +1,5 @@
-import { ItemPropTypes } from '../../utils/types';
 import style from './IngredientDetails.module.scss';
-import { useSelector, useDispatch } from 'react-redux';
-
-interface IngredientDetailsPropTypes {
-  modalInfo: { type: string; data: ItemPropTypes };
-}
+import { useSelector} from 'react-redux';
 
 function IngredientDetails() {
   const { ingredientDetails } = useSelector((state: any) => state.ingredientDetailsSlice);

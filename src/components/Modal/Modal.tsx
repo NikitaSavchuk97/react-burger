@@ -5,18 +5,12 @@ import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalPropTypes } from '../../utils/types';
 import { useEffect } from 'react';
-import { closeModal } from '../../redux/slices/modalSlice';
-import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
-import { useDispatch, useSelector } from 'react-redux';
+
 const modalRoot = document.getElementById('root-modal');
 
 function Modal(props: ModalPropTypes) {
-  const dispatch = useDispatch();
-  const { modalTitle } = useSelector((state: any) => state.modalSlice);
-
   const handleCloseModal = () => {
-    dispatch(removeIngredientDetails());
-    dispatch(closeModal());
+    props.closeModal();
   };
 
   const handleButtonCloseModal = (event: KeyboardEvent) => {
@@ -28,7 +22,7 @@ function Modal(props: ModalPropTypes) {
     return () => {
       document.removeEventListener('keydown', handleButtonCloseModal);
     };
-  });
+  }, []);
 
   return (
     modalRoot &&
@@ -36,7 +30,7 @@ function Modal(props: ModalPropTypes) {
       <>
         <ModalOverlay closeModal={handleCloseModal} />
         <section className={style.container}>
-          <h2 className={`${style.container__title} text text_type_main-large`}>{modalTitle}</h2>
+          <h2 className={`${style.container__title} text text_type_main-large`}>{props.title}</h2>
           <button className={`${style.container__button}`} type='button' onClick={handleCloseModal}>
             <CloseIcon type='primary' />
           </button>

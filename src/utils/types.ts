@@ -1,5 +1,7 @@
 export interface ModalPropTypes {
+  title: string;
   children: React.ReactNode;
+  closeModal: () => void;
 }
 
 export interface BurgerIngredientsPropTypes {
@@ -11,14 +13,27 @@ export interface ProductListPropTypes {
   title: string;
   type: string;
   id: string;
+  openModal: ({ type, id }: { type: string; id: string }) => void;
+}
+
+export interface ProductPropType {
+  _id: string;
+}
+
+export interface IngredientPropType {
+  _id: string;
 }
 
 export interface BurgerConstructorPropTypes {
   openModal: ({ type, id }: { type: string; id: string }) => void;
 }
 
+export interface DropItemPropTypes {
+  item: ItemPropTypes;
+}
+
 export interface ItemPropTypes {
-  removeId: number;
+  removeId: string;
   calories: number;
   carbohydrates: number;
   fat: number;
@@ -31,4 +46,5 @@ export interface ItemPropTypes {
   type: string;
   __v: number;
   _id: string;
+  uuid?: string;
 }

@@ -1,11 +1,5 @@
-import axios from 'axios';
-import { BASE_URL } from '../store';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-export const getIngredients = createAsyncThunk<any>('ingredients/fetchIngredients', async () => {
-  const { data } = await axios.get(`${BASE_URL}/api/ingredients`);
-  return data;
-});
+import { createSlice } from '@reduxjs/toolkit';
+import { getIngredients } from '../actions/getIngredients';
 
 interface InitialState {
   ingredients: Array<object>;

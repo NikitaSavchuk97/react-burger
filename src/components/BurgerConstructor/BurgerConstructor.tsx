@@ -1,8 +1,10 @@
 import style from './BurgerConstructor.module.scss';
-import { ItemPropTypes } from '../../utils/types';
+import { BurgerConstructorPropTypes, ItemPropTypes, ProductPropType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
-import { openModal } from '../../redux/slices/modalSlice';
 import { useDrop } from 'react-dnd';
+import { v4 as uuidv4 } from 'uuid';
+import { postOrder } from '../../redux/actions/postOrder';
+
 import {
   ConstructorElement,
   DragIcon,
@@ -12,15 +14,16 @@ import {
 import {
   addBunCurrent,
   addToOrderList,
+  clearOrderList,
   addIngredientsCurrent,
   removeIngredientsCurrent,
   setTotalPrice,
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
 
-function BurgerConstructor() {
-  const dispatch = useDispatch();
-  //const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
+function BurgerConstructor(props: BurgerConstructorPropTypes) {
+  const dispatch = useDispatch<any>();
+
   const { bunCurrent, ingredientsCurrent, orderCurrentList, totalPrice } = useSelector(
     (state: any) => state.ingredientsCurrentSlice,
   );
@@ -35,9 +38,10 @@ function BurgerConstructor() {
     collect: (monitor) => ({
       isHoverIngredient: monitor.isOver(),
     }),
-    drop(item: any) {
+    drop: (item: ItemPropTypes) => {
       if (item.type !== 'bun') {
-        dispatch(addIngredientsCurrent({ item, ingredientsCurrent }));
+        const removeId = uuidv4();
+        dispatch(addIngredientsCurrent({ item, removeId }));
       } else {
         return;
       }
@@ -49,7 +53,7 @@ function BurgerConstructor() {
     collect: (monitor) => ({
       isHoverBun: monitor.isOver(),
     }),
-    drop(item: any) {
+    drop: (item: ItemPropTypes) => {
       if (item.type === 'bun') {
         dispatch(addBunCurrent(item));
       } else {
@@ -58,7 +62,11 @@ function BurgerConstructor() {
     },
   });
 
-  const getMainBun = (item: any, position: any, descr: any) => {
+  const getMainBun = (
+    item: ItemPropTypes,
+    position: 'top' | 'bottom' | undefined,
+    descr: string,
+  ) => {
     return (
       <ConstructorElement
         text={`${item.name} ${descr}`}
@@ -70,12 +78,20 @@ function BurgerConstructor() {
     );
   };
 
-  const handleRemoveClick = (e: any) => {
-    dispatch(removeIngredientsCurrent(e.target.closest('li').dataset.id));
+  const handleRemoveClick = (e: string) => {
+    dispatch(removeIngredientsCurrent(e));
   };
 
   const onOrderClick = () => {
-    dispatch(openModal({ type: 'order' }));
+    dispatch(
+      postOrder(
+        orderCurrentList.map((product: ProductPropType) => {
+          return product._id;
+        }),
+      ),
+    );
+    dispatch(clearOrderList());
+    props.openModal({ type: 'order', id: '' });
   };
 
   useEffect(() => {
@@ -106,16 +122,12 @@ function BurgerConstructor() {
               </h3>
             ) : (
               ingredientsCurrent.map(
-                (item: ItemPropTypes, index: number) =>
+                (item: ItemPropTypes) =>
                   item.type !== 'bun' && (
-                    <li
-                      className={`${style.section__item} pr-3`}
-                      data-id={item.removeId}
-                      key={item._id + index}
-                    >
+                    <li className={`${style.section__item} pr-3`} key={item.removeId}>
                       <DragIcon type={'primary'} />
                       <ConstructorElement
-                        handleClose={handleRemoveClick}
+                        handleClose={() => handleRemoveClick(item.removeId)}
                         extraClass={style.section__element}
                         text={item.name}
                         price={item.price}
@@ -141,7 +153,13 @@ function BurgerConstructor() {
           <CurrencyIcon type='primary' />
         </div>
 
-        <Button htmlType='button' type='primary' size='medium' onClick={onOrderClick}>
+        <Button
+          htmlType='button'
+          type='primary'
+          size='medium'
+          onClick={onOrderClick}
+          disabled={orderCurrentList.length < 3 ? true : false}
+        >
           Оформить заказ
         </Button>
       </div>
