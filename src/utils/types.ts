@@ -32,6 +32,12 @@ export interface DropItemPropTypes {
   item: ItemPropTypes;
 }
 
+export interface DraggableItemPropTypes {
+  item: ItemPropTypes;
+  amount: number;
+  onItemGrab: (e: any) => void;
+}
+
 export interface ItemPropTypes {
   removeId: string;
   calories: number;
@@ -46,5 +52,4 @@ export interface ItemPropTypes {
   type: string;
   __v: number;
   _id: string;
-  uuid?: string;
 }

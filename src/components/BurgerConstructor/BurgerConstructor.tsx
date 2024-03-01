@@ -4,10 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import { postOrder } from '../../redux/actions/postOrder';
-
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -16,10 +14,10 @@ import {
   addToOrderList,
   clearOrderList,
   addIngredientsCurrent,
-  removeIngredientsCurrent,
   setTotalPrice,
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
+import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
 
 function BurgerConstructor(props: BurgerConstructorPropTypes) {
   const dispatch = useDispatch<any>();
@@ -29,9 +27,26 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
   );
 
   const getOrderPrice = () => {
-    const mainPrice = orderCurrentList.reduce((acc: any, curr: any) => acc + curr.price, 0);
+    const mainPrice = orderCurrentList.reduce(
+      (acc: number, curr: ItemPropTypes) => acc + curr.price,
+      0,
+    );
     dispatch(setTotalPrice(mainPrice));
   };
+
+  const [, dropBun] = useDrop({
+    accept: ['bun', 'sauce', 'main'],
+    collect: (monitor) => ({
+      isHoverBun: monitor.isOver(),
+    }),
+    drop: (item: ItemPropTypes) => {
+      if (item.type === 'bun') {
+        dispatch(addBunCurrent(item));
+      } else {
+        return;
+      }
+    },
+  });
 
   const [, dropIngredients] = useDrop({
     accept: ['sauce', 'main'],
@@ -42,20 +57,6 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
       if (item.type !== 'bun') {
         const removeId = uuidv4();
         dispatch(addIngredientsCurrent({ item, removeId }));
-      } else {
-        return;
-      }
-    },
-  });
-
-  const [, dropBun] = useDrop({
-    accept: ['bun', 'sauce'],
-    collect: (monitor) => ({
-      isHoverBun: monitor.isOver(),
-    }),
-    drop: (item: ItemPropTypes) => {
-      if (item.type === 'bun') {
-        dispatch(addBunCurrent(item));
       } else {
         return;
       }
@@ -76,10 +77,6 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
         thumbnail={item.image}
       />
     );
-  };
-
-  const handleRemoveClick = (e: string) => {
-    dispatch(removeIngredientsCurrent(e));
   };
 
   const onOrderClick = () => {
@@ -122,18 +119,9 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
               </h3>
             ) : (
               ingredientsCurrent.map(
-                (item: ItemPropTypes) =>
+                (item: ItemPropTypes, index: number) =>
                   item.type !== 'bun' && (
-                    <li className={`${style.section__item} pr-3`} key={item.removeId}>
-                      <DragIcon type={'primary'} />
-                      <ConstructorElement
-                        handleClose={() => handleRemoveClick(item.removeId)}
-                        extraClass={style.section__element}
-                        text={item.name}
-                        price={item.price}
-                        thumbnail={item.image}
-                      />
-                    </li>
+                    <ConstructorIngredient ingredient={item} index={index} key={item.removeId} />
                   ),
               )
             )}

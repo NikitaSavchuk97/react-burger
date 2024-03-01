@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { postOrder } from '../actions/postOrder';
+import { ItemPropTypes } from '../../utils/types';
 
 interface InitialState {
   bunCurrent: Array<object>;
@@ -41,9 +42,23 @@ export const ingredientsCurrentSlice = createSlice({
       });
     },
     removeIngredientsCurrent(state, action) {
-      state.ingredientsCurrent = state.ingredientsCurrent.filter(
-        (item: any) => item.removeId !== action.payload,
-      );
+      state.ingredientsCurrent = state.ingredientsCurrent.filter((item: any) => {
+        return item.removeId !== action.payload;
+      });
+    },
+    moveIngredientsCurrent(state, action) {
+      const { dragIndex, hoverIndex } = action.payload;
+      if (
+        dragIndex >= 0 &&
+        dragIndex < state.ingredientsCurrent.length &&
+        hoverIndex >= 0 &&
+        hoverIndex < state.ingredientsCurrent.length
+      ) {
+        [state.ingredientsCurrent[dragIndex], state.ingredientsCurrent[hoverIndex]] = [
+          state.ingredientsCurrent[hoverIndex],
+          state.ingredientsCurrent[dragIndex],
+        ];
+      }
     },
     setTotalPrice(state, action) {
       state.totalPrice = 0;
@@ -71,6 +86,7 @@ export const {
   clearOrderList,
   addIngredientsCurrent,
   removeIngredientsCurrent,
+  moveIngredientsCurrent,
   setTotalPrice,
 } = ingredientsCurrentSlice.actions;
 export default ingredientsCurrentSlice.reducer;
