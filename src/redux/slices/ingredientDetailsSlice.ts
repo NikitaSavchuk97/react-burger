@@ -1,13 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { IngredientsDetailsSlicePropTypes } from '../../utils/types';
 
-interface InitialState {
-  ingredientDetails: object;
-  status: string;
-}
-
-const initialState: InitialState = {
+const initialState: IngredientsDetailsSlicePropTypes = {
   ingredientDetails: {},
-  status: 'loading', // loading | success | error
+  status: 'loading',
 };
 
 export const ingredientsDetailsSlice = createSlice({

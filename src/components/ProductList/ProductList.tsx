@@ -10,7 +10,6 @@ function ProductList(props: ProductListPropTypes) {
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
 
   const onItemGrab = (e: any) => {
-    console.log(typeof e);
     const targetElement = e.target.closest('section');
     const itemData = ingredients.find((item: ItemPropTypes) => item._id === targetElement.id);
     dispatch(addIngredientDetails(itemData));

@@ -12,13 +12,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useState } from 'react';
-import { IngredientPropType } from '../../utils/types';
+import { IngredientPropType, ItemPropTypes } from '../../utils/types';
 
 function App() {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
   const { isModalOpen, openModal, closeModal } = useModal();
-  const [modalInfo, setModalInfo] = useState<any>({
+  const [modalInfo, setModalInfo] = useState<{
+    title: string | null | undefined;
+    type: string | null | undefined;
+    data?: ItemPropTypes | null;
+  }>({
     title: null,
     type: null,
     data: null,
@@ -32,11 +36,11 @@ function App() {
       data: null,
     });
     closeModal();
-	};
+  };
 
-  const handleOpenModal = ({ type, id }: { type: string; id: string }) => {
+  const handleOpenModal = ({ type, id }: { type?: string; id?: string | number }) => {
     const itemData = ingredients.find((item: IngredientPropType) => item._id === id);
-    const title = type === 'ingredient' ? 'Детали ингридиента' : '';
+    const title = type === 'ingredient' ? 'Детали ингридиента' : undefined;
     setModalInfo({ title: title, type: type, data: itemData });
     openModal();
   };

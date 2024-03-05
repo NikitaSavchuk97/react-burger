@@ -1,10 +1,15 @@
 import style from './OrderDetails.module.scss';
 import doneSvg from '../../images/doneSvg.svg';
+import { useSelector } from 'react-redux';
 
 function OrderDetails() {
+  const { orderCurrentInProgress } = useSelector((state: any) => state.ingredientsCurrentSlice);
+
   return (
     <section className={`${style.container}`}>
-      <h2 className={`${style.container__title} pb-2 text text_type_digits-large`}>123456</h2>
+      <h2 className={`${style.container__title} pb-2 text text_type_digits-large`}>
+        {orderCurrentInProgress}
+      </h2>
       <h4 className='pb-15 text text_type_main-medium'>идентификатор заказа</h4>
       <div className={`${style.container__icon} pb-10`}>
         <img src={doneSvg} alt='Заказ принят' />

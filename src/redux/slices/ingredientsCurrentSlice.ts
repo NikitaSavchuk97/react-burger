@@ -1,21 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { postOrder } from '../actions/postOrder';
-import { ItemPropTypes } from '../../utils/types';
+import { IngredientsCurrentSlicePropTypes } from '../../utils/types';
 
-interface InitialState {
-  bunCurrent: Array<object>;
-  ingredientsCurrent: Array<object>;
-  orderCurrentList: Array<object>;
-  totalPrice: number;
-  status: string;
-}
-
-const initialState: InitialState = {
+const initialState: IngredientsCurrentSlicePropTypes = {
   bunCurrent: [],
   ingredientsCurrent: [],
   orderCurrentList: [],
+  orderCurrentInProgress: {},
   totalPrice: 0,
-  status: 'loading', // loading | success | error
+  status: 'loading',
 };
 
 export const ingredientsCurrentSlice = createSlice({
@@ -71,7 +64,7 @@ export const ingredientsCurrentSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(postOrder.fulfilled, (state, action) => {
-        console.log('{З}{а}{к}{а}{з}: ', action.payload);
+        state.orderCurrentInProgress = action.payload.order.number;
         state.status = 'success';
       })
       .addCase(postOrder.rejected, (state) => {

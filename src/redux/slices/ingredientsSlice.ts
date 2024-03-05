@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from '../actions/getIngredients';
+import { IngredientsSlicePropTypes } from '../../utils/types';
 
-interface InitialState {
-  ingredients: Array<object>;
-  status: string;
-}
-
-const initialState: InitialState = {
+const initialState: IngredientsSlicePropTypes = {
   ingredients: [],
-  status: '', // loading | success | error
+  status: '',
 };
 
 export const ingredientsSlice = createSlice({

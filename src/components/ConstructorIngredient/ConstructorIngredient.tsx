@@ -5,20 +5,12 @@ import {
   moveIngredientsCurrent,
   removeIngredientsCurrent,
 } from '../../redux/slices/ingredientsCurrentSlice';
-import { ItemPropTypes } from '../../utils/types';
+import { ConstructorIngredientsPropTypes, ItemPropTypes } from '../../utils/types';
 import { useRef, FC } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 
-export interface ConstructorIngredientsPropTypes {
-  ingredient: ItemPropTypes;
-  index: number;
-}
-
 const ConstructorIngredient: FC<ConstructorIngredientsPropTypes> = ({ ingredient, index }) => {
   const dispatch = useDispatch<any>();
-
-  // Деструктуризация свойств ингредиента
-  const { name, price, image, removeId } = ingredient;
 
   // Создание ссылки на DOM-элемент
   const ref = useRef<HTMLDivElement>(null);

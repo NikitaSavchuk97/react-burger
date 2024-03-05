@@ -22,9 +22,8 @@ import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredien
 function BurgerConstructor(props: BurgerConstructorPropTypes) {
   const dispatch = useDispatch<any>();
 
-  const { bunCurrent, ingredientsCurrent, orderCurrentList, totalPrice } = useSelector(
-    (state: any) => state.ingredientsCurrentSlice,
-  );
+  const { bunCurrent, ingredientsCurrent, orderCurrentList, orderCurrentInProgress, totalPrice } =
+    useSelector((state: any) => state.ingredientsCurrentSlice);
 
   const getOrderPrice = () => {
     const mainPrice = orderCurrentList.reduce(
@@ -79,8 +78,8 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
     );
   };
 
-  const onOrderClick = () => {
-    dispatch(
+  const onOrderClick = async () => {
+    await dispatch(
       postOrder(
         orderCurrentList.map((product: ProductPropType) => {
           return product._id;
@@ -93,7 +92,7 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
 
   useEffect(() => {
     dispatch(addToOrderList([bunCurrent, bunCurrent, ...ingredientsCurrent]));
-  }, [bunCurrent, ingredientsCurrent, dispatch]);
+  }, [bunCurrent, ingredientsCurrent, dispatch, orderCurrentInProgress]);
 
   useEffect(() => {
     if (bunCurrent.length !== 0) {
