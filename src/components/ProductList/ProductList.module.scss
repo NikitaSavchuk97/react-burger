@@ -2,17 +2,5 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-
-  &_item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    width: 272px;
-  }
+  position: relative;
 }

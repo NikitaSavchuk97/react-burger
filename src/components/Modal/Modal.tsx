@@ -5,11 +5,16 @@ import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ModalPropTypes } from '../../utils/types';
 import { useEffect } from 'react';
+
 const modalRoot = document.getElementById('root-modal');
 
 function Modal(props: ModalPropTypes) {
+  const handleCloseModal = () => {
+    props.closeModal();
+  };
+
   const handleButtonCloseModal = (event: KeyboardEvent) => {
-    if (event.code === 'Escape') props.closeModal();
+    if (event.code === 'Escape') handleCloseModal();
   };
 
   useEffect(() => {
@@ -17,22 +22,16 @@ function Modal(props: ModalPropTypes) {
     return () => {
       document.removeEventListener('keydown', handleButtonCloseModal);
     };
-  });
+  }, []);
 
   return (
     modalRoot &&
     createPortal(
       <>
-        <ModalOverlay closeModal={props.closeModal} />
+        <ModalOverlay closeModal={handleCloseModal} />
         <section className={style.container}>
-          {/* 
-							Уважаемый ревьюер, в чате моей когорты, в слаке, 
-							уже поднимался вопрос центровки заголовка и наставник сообщил что его не нужно исправлять/центровать. 
-							Моя реализация аналогична выданному мне макету из фигмы. 
-					*/}
-
           <h2 className={`${style.container__title} text text_type_main-large`}>{props.title}</h2>
-          <button className={`${style.container__button}`} type='button' onClick={props.closeModal}>
+          <button className={`${style.container__button}`} type='button' onClick={handleCloseModal}>
             <CloseIcon type='primary' />
           </button>
           {props.children}
