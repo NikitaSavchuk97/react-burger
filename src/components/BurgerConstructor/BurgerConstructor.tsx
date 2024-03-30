@@ -3,7 +3,7 @@ import { BurgerConstructorPropTypes, ItemPropTypes, ProductPropType } from '../.
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
-import { postOrder } from '../../redux/actions/postOrder';
+import { postOrderUser } from '../../redux/actions/postOrderUser';
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -18,12 +18,16 @@ import {
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
 import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor(props: BurgerConstructorPropTypes) {
   const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
 
   const { bunCurrent, ingredientsCurrent, orderCurrentList, orderCurrentInProgress, totalPrice } =
     useSelector((state: any) => state.ingredientsCurrentSlice);
+
+  const { userCurrentLoggedIn } = useSelector((state: any) => state.userCurrentSlice);
 
   const getOrderPrice = () => {
     const mainPrice = orderCurrentList.reduce(
@@ -79,15 +83,19 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
   };
 
   const onOrderClick = async () => {
-    await dispatch(
-      postOrder(
-        orderCurrentList.map((product: ProductPropType) => {
-          return product._id;
-        }),
-      ),
-    );
-    dispatch(clearOrderList());
-    props.openModal({ type: 'order', id: '' });
+    if (userCurrentLoggedIn) {
+      await dispatch(
+        postOrderUser(
+          orderCurrentList.map((product: ProductPropType) => {
+            return product._id;
+          }),
+        ),
+      );
+      dispatch(clearOrderList());
+      props.openModal({ type: 'order', id: '' });
+    } else {
+      navigate('/login');
+    }
   };
 
   useEffect(() => {

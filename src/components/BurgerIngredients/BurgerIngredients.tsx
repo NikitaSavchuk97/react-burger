@@ -1,7 +1,7 @@
 import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../redux/actions/getIngredients';
 
 export interface BurgerIngredientsPropTypes {
@@ -10,11 +10,11 @@ export interface BurgerIngredientsPropTypes {
 
 function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   const dispatch = useDispatch<any>();
-
+  const ingredientsLocalStorage = JSON.parse(localStorage.getItem('ingredientsLocalStorage')!);
   const buns = useRef<HTMLInputElement>(null);
   const sauces = useRef<HTMLInputElement>(null);
   const mains = useRef<HTMLInputElement>(null);
-
+  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
   const [bunsCoords, setBunsCoords] = useState<number>(320);
   const [saucesCoords, setSaucesCoords] = useState<number>(620);
   const [mainsCoords, setMainsCoords] = useState<number>(340);
@@ -28,7 +28,12 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   };
 
   useEffect(() => {
-    dispatch(getIngredients());
+    // if (ingredients.length === 0) {
+    //   dispatch(getIngredients());
+    // }
+    // if (ingredientsLocalStorage === null) {
+    //   dispatch(getIngredients());
+    // }
   }, [dispatch]);
 
   return (

@@ -1,0 +1,27 @@
+.section {
+  display: flex;
+  flex-direction: row;
+
+  &__links {
+    width: 180px;
+    height: auto;
+    padding: 10px;
+    position: relative;
+
+    &_link {
+      text-decoration: none;
+      color: rgb(255, 255, 255);
+
+      &_active {
+        opacity: 0.6;
+        cursor: default;
+      }
+    }
+
+    &_button {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+  }
+}

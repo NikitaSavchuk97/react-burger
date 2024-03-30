@@ -23,6 +23,7 @@ export const ingredientsSlice = createSlice({
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.ingredients = action.payload.data;
+        localStorage.setItem('ingredientsLocalStorage', JSON.stringify(action.payload.data));
         state.status = 'success';
       })
       .addCase(getIngredients.rejected, (state) => {

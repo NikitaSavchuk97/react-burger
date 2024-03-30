@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { postOrder } from '../actions/postOrder';
+import { postOrderUser } from '../actions/postOrderUser';
 import { IngredientsCurrentSlicePropTypes } from '../../utils/types';
 
 const initialState: IngredientsCurrentSlicePropTypes = {
@@ -60,14 +60,14 @@ export const ingredientsCurrentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(postOrder.pending, (state) => {
+      .addCase(postOrderUser.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(postOrder.fulfilled, (state, action) => {
+      .addCase(postOrderUser.fulfilled, (state, action) => {
         state.orderCurrentInProgress = action.payload.order.number;
         state.status = 'success';
       })
-      .addCase(postOrder.rejected, (state) => {
+      .addCase(postOrderUser.rejected, (state) => {
         state.status = 'error';
       });
   },

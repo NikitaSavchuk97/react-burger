@@ -1,5 +1,6 @@
+import { useEffect } from 'react';
 import style from './IngredientDetails.module.scss';
-import { useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function IngredientDetails() {
   const { ingredientDetails } = useSelector((state: any) => state.ingredientDetailsSlice);

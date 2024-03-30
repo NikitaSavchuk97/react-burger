@@ -2,10 +2,13 @@ import style from './ProductList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
 import { ProductListPropTypes, ItemPropTypes } from '../../utils/types';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import DraggableItem from '../DraggableItem/DraggableItem';
 
 function ProductList(props: ProductListPropTypes) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const { orderCurrentList } = useSelector((state: any) => state.ingredientsCurrentSlice);
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
 
@@ -14,6 +17,7 @@ function ProductList(props: ProductListPropTypes) {
     const itemData = ingredients.find((item: ItemPropTypes) => item._id === targetElement.id);
     dispatch(addIngredientDetails(itemData));
     props.openModal({ type: 'ingredient', id: targetElement.id });
+    navigate(`/ingredient/${targetElement.id}`);
   };
 
   return (
@@ -29,7 +33,14 @@ function ProductList(props: ProductListPropTypes) {
           });
           return (
             item.type === props.type && (
-              <DraggableItem key={item._id} item={item} amount={amount} onItemGrab={onItemGrab} />
+              <Link
+                className={style.grid__link}
+                key={item._id}
+                to={`/ingredient/${item._id}`}
+                state={{ background: location }}
+              >
+                <DraggableItem item={item} amount={amount} onItemGrab={onItemGrab} />
+              </Link>
             )
           );
         })}

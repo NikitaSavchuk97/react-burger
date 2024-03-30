@@ -21,6 +21,11 @@
   &__logo {
     position: absolute;
     left: 38.2%;
+
+    &_active {
+      opacity: 0.6;
+      cursor: default;
+    }
   }
 
   &__link {
@@ -34,6 +39,11 @@
     color: white;
 
     text-decoration: none;
+
+    &_active {
+      opacity: 0.6;
+      cursor: default;
+    }
 
     &:hover {
       opacity: 0.6;
