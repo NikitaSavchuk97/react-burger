@@ -26,7 +26,7 @@ import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import ProfileOrders from '../ProfileOrders/ProfileOrders';
 
 import { getCurrentUser } from '../../redux/actions/getCurrentUser';
-
+// почему то не отображается комит в гитхабе
 function App() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
