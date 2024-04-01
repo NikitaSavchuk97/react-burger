@@ -1,38 +1,50 @@
 import styles from './ProfileInputs.module.scss';
-import { FC, useEffect, useState } from 'react';
+import useForm from '../../hooks/useForm';
+import { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { patchInfoUser } from '../../redux/actions/patchInfoUser';
 import {
   EmailInput,
   PasswordInput,
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { patchInfoUser } from '../../redux/actions/patchInfoUser';
-import { getCurrentUser } from '../../redux/actions/getCurrentUser';
 
 const ProfileInputs: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-
   const { userCurrent } = useSelector((state: any) => state.userCurrentSlice);
-  const [nameValue, setNameValue] = useState(userCurrent.name);
-  const [emailValue, setEmailValue] = useState(userCurrent.email);
-  const [passValue, setPassValue] = useState('');
+  const { values, handleChange, setValues } = useForm({
+    name: userCurrent.name,
+    email: userCurrent.email,
+    password: '',
+  });
+
+  const nameValue = values.name;
+  const emailValue = values.email;
+  const passValue = values.password;
 
   const { requestStatus, userCurrentRegistrSuccessServerAnswer } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
 
-  const handlePatchInfoUser = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setValues({ ...values, password: '' });
     await dispatch(patchInfoUser({ nameValue, emailValue, passValue }));
-    //await dispatch(getCurrentUser());
   };
 
+  function compareNameAndEmail(obj1: any, obj2: any): boolean {
+    return obj1.name !== obj2.name || obj1.email !== obj2.email;
+  }
+
   const handleUndoChanges = () => {
-    setEmailValue(userCurrent.email);
-    setNameValue(userCurrent.name);
-    setPassValue('');
+    setValues({
+      name: userCurrent.name,
+      email: userCurrent.email,
+      password: '',
+    });
   };
 
   useEffect(() => {
@@ -42,11 +54,11 @@ const ProfileInputs: FC = () => {
   }, [requestStatus, userCurrentRegistrSuccessServerAnswer]);
 
   return (
-    <div className={styles.inputs}>
+    <form className={styles.inputs} onSubmit={handleSubmit}>
       <Input
         type={'text'}
         placeholder='name'
-        onChange={(e) => setNameValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={nameValue}
         name={'name'}
         error={false}
@@ -56,7 +68,7 @@ const ProfileInputs: FC = () => {
       />
       <br />
       <EmailInput
-        onChange={(e) => setEmailValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={emailValue}
         name={'email'}
         placeholder='email'
@@ -64,34 +76,27 @@ const ProfileInputs: FC = () => {
       />
       <br />
       <PasswordInput
-        onChange={(e) => setPassValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={passValue}
         name={'password'}
         placeholder='password'
         extraClass='mb-2'
       />
       <br />
-      <div className={styles.inputs__wrapper}>
-        <Button
-          onClick={handleUndoChanges}
-          //extraClass={styles.inputs__wrapper__button}
-          htmlType='button'
-          type='primary'
-          size='medium'
-        >
-          Отменить изменения
-        </Button>
-        <Button
-          onClick={handlePatchInfoUser}
-          //extraClass={styles.inputs__wrapper__button}
-          htmlType='button'
-          type='primary'
-          size='medium'
-        >
-          Изменить
-        </Button>
-      </div>
-    </div>
+
+      {compareNameAndEmail(values, userCurrent) || values.password !== '' ? (
+        <div className={`${styles.inputs__wrapper}`}>
+          <Button onClick={handleUndoChanges} htmlType='button' type='primary' size='medium'>
+            Отменить изменения
+          </Button>
+          <Button htmlType='submit' type='primary' size='medium'>
+            Изменить
+          </Button>
+        </div>
+      ) : (
+        ''
+      )}
+    </form>
   );
 };
 

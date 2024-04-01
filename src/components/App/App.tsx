@@ -29,10 +29,9 @@ import { getCurrentUser } from '../../redux/actions/getCurrentUser';
 
 function App() {
   const dispatch = useDispatch<any>();
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const background = location.state && location.state.background;
-  const { userCurrent } = useSelector((state: any) => state.userCurrentSlice);
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
 
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -47,20 +46,21 @@ function App() {
   });
 
   const handleCloseModal = () => {
-    dispatch(removeIngredientDetails());
+    //dispatch(removeIngredientDetails());
     setModalInfo({
       title: null,
       type: null,
       data: null,
     });
     closeModal();
-    navigate(-2);
+    navigate(-1);
   };
 
-  const handleOpenModal = ({ type, id }: { type?: string; id?: string | number }) => {
-    const itemData = ingredients.find((item: IngredientPropType) => item._id === id);
-    const title = type === 'ingredient' ? 'Детали ингридиента' : undefined;
-    setModalInfo({ title: title, type: type, data: itemData });
+  const handleOpenModal = () => {
+    //{ type, id }: { type?: string; id?: string | number }
+    //const itemData = ingredients.find((item: IngredientPropType) => item._id === id);
+    //const title = type === 'ingredient' ? 'Детали ингридиента' : undefined;
+    //setModalInfo({ title: title, type: type, data: itemData });
     openModal();
   };
 
@@ -88,7 +88,14 @@ function App() {
           }
         />
 
-        <Route path='/orders' element={<CenterElements></CenterElements>} />
+        <Route
+          path='/orders'
+          element={
+            <CenterElements>
+              <h1>ЛЕНТА ЗАКАЗОВ</h1>
+            </CenterElements>
+          }
+        />
 
         <Route
           path='/profile'
@@ -112,6 +119,7 @@ function App() {
           path='/login'
           element={
             <ProtectedRoute
+              anonymous
               element={
                 <CenterElements>
                   <LoginPage />
@@ -120,10 +128,12 @@ function App() {
             />
           }
         />
+
         <Route
           path='/register'
           element={
             <ProtectedRoute
+              anonymous
               element={
                 <CenterElements>
                   <RegistrationPage />
@@ -132,10 +142,12 @@ function App() {
             />
           }
         />
+
         <Route
           path='/forgot-password'
           element={
             <ProtectedRoute
+              anonymous
               element={
                 <CenterElements>
                   <ForgotFirstPage />
@@ -144,10 +156,12 @@ function App() {
             />
           }
         />
+
         <Route
           path='/reset-password'
           element={
             <ProtectedRoute
+              anonymous
               element={
                 <CenterElements>
                   <ForgotSecondPage />
@@ -167,22 +181,31 @@ function App() {
         />
       </Routes>
 
-      {background && isModalOpen && (
+      {background && (
         <Routes>
           <Route
             path='/ingredient/:Id'
             element={
-              <Modal title={modalInfo.title} closeModal={handleCloseModal}>
+              <Modal title='Детали ингредиента' closeModal={handleCloseModal}>
                 <IngredientDetails />
               </Modal>
             }
           />
+
+          {/* <Route
+            path='/order'
+            element={
+              <Modal title='Детали заказа' closeModal={handleCloseModal}>
+                <OrderDetails />
+              </Modal>
+            }
+          /> */}
         </Routes>
       )}
 
       {/* {isModalOpen && (
-        <Modal title={modalInfo.title} closeModal={handleCloseModal}>
-          {modalInfo.type === 'ingredient' ? <IngredientDetails /> : <OrderDetails />}
+        <Modal title='' closeModal={handleCloseModal}>
+          <OrderDetails />
         </Modal>
       )} */}
     </section>

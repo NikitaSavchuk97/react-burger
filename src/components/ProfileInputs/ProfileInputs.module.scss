@@ -13,8 +13,8 @@
     width: 100%;
     justify-content: space-between;
 
-    &__button {
-      width: 160px;
+    &__hidden {
+      display: none;
     }
   }
 }

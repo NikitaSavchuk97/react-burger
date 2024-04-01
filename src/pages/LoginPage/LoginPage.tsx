@@ -1,5 +1,5 @@
 import styles from './LoginPage.module.scss';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { postLoginUser } from '../../redux/actions/postLoginUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,19 +8,20 @@ import {
   PasswordInput,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import useForm from '../../hooks/useForm';
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-
-  const { userCurrentLoggedIn, requestStatus, userCurrent } = useSelector(
+  const { values, handleChange } = useForm({ email: '', password: '' });
+  const { userCurrentLoggedIn, requestStatus } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
+  const emailValue = values.email;
+  const passValue = values.password;
 
-  const [emailValue, setEmailValue] = useState('');
-  const [passValue, setPassValue] = useState('');
-
-  const onButtonClick = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     await dispatch(postLoginUser({ emailValue, passValue }));
   };
 
@@ -31,32 +32,26 @@ const LoginPage: FC = () => {
   }, [requestStatus, userCurrentLoggedIn]);
 
   return (
-    <section className={styles.section}>
+    <form className={styles.section} onSubmit={handleSubmit}>
       <h2 className={`${styles.section__title} text text_type_main-medium`}>Вход</h2>
       <br />
       <EmailInput
-        onChange={(e) => setEmailValue(e.target.value)}
-        value={emailValue}
+        onChange={(e) => handleChange(e)}
+        value={values.email}
         name={'email'}
         placeholder='email'
         isIcon={false}
       />
       <br />
       <PasswordInput
-        onChange={(e) => setPassValue(e.target.value)}
-        value={passValue}
+        onChange={(e) => handleChange(e)}
+        value={values.password}
         name={'password'}
         placeholder='password'
         extraClass='mb-2'
       />
       <br />
-      <Button
-        onClick={onButtonClick}
-        extraClass={styles.section__button}
-        htmlType='button'
-        type='primary'
-        size='medium'
-      >
+      <Button extraClass={styles.section__button} htmlType='submit' type='primary' size='medium'>
         Войти
       </Button>
       <br />
@@ -75,7 +70,7 @@ const LoginPage: FC = () => {
           Восстановить пароль
         </Link>
       </h3>
-    </section>
+    </form>
   );
 };
 

@@ -1,20 +1,24 @@
 import styles from './ForgotFirstPage.module.scss';
 import { postForgotPass } from '../../redux/actions/postForgotPass';
 import { useSelector, useDispatch } from 'react-redux';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-//import userCurrentSlice from '../../redux/slices/userCurrentSlice';
+import useForm from '../../hooks/useForm';
 
 const ForgotFirstPage: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
+
   const { requestStatus, userCurrentForgotPassServerAnswer } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
-  const dispatch = useDispatch<any>();
-  const [emailValue, setEmailValue] = useState<string>('');
-  const navigate = useNavigate();
 
-  const onButtonClick = async () => {
+  const { values, handleChange } = useForm({ email: '' });
+  const emailValue = values.email;
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     await dispatch(postForgotPass(emailValue));
   };
 
@@ -25,26 +29,21 @@ const ForgotFirstPage: FC = () => {
   }, [requestStatus, userCurrentForgotPassServerAnswer]);
 
   return (
-    <section className={styles.section}>
+    <form className={styles.section} onSubmit={handleSubmit}>
       <h2 className={`${styles.section__title} text text_type_main-medium`}>
         Восстановление пароля
       </h2>
       <br />
       <EmailInput
-        onChange={(e) => setEmailValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
+        name={'email'}
         value={emailValue}
         placeholder='email'
         isIcon={false}
       />
       <br />
 
-      <Button
-        extraClass={styles.section__button}
-        onClick={onButtonClick}
-        htmlType='button'
-        type='primary'
-        size='medium'
-      >
+      <Button extraClass={styles.section__button} htmlType='submit' type='primary' size='medium'>
         Восстановить
       </Button>
       <br />
@@ -56,7 +55,7 @@ const ForgotFirstPage: FC = () => {
           Войти
         </Link>
       </h3>
-    </section>
+    </form>
   );
 };
 

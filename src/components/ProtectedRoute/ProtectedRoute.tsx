@@ -2,36 +2,37 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { JSXElementConstructor, useEffect } from 'react';
 
-function ProtectedRoute({ element }: { element: any }) {
-  const location = useLocation().pathname;
+function ProtectedRoute({ element, anonymous = false }: { element: any; anonymous?: boolean }) {
+  const location = useLocation();
+  const from = location.state?.from || '/';
   const { userCurrentLoggedIn, userCurrentForgotPassServerAnswer } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
 
-  console.log('ПОЛЬЗОВАТЕЛЬ === ', userCurrentLoggedIn);
-
-  if (
-    userCurrentLoggedIn &&
-    (location === '/reset-password' ||
-      location === '/forgot-password' ||
-      location === '/login' ||
-      location === '/register')
-  ) {
-    return <Navigate to='/' />;
+  // Если разрешен неавторизованный доступ, а пользователь авторизован...
+  if (anonymous && userCurrentLoggedIn) {
+    // ...то отправляем его на предыдущую страницу
+    return <Navigate to={from} />;
   }
 
+  // Если требуется авторизация, а пользователь не авторизован...
+  if (!anonymous && !userCurrentLoggedIn) {
+    // ...то отправляем его на страницу логин
+    return <Navigate to='/login' state={{ from: location }} />;
+  }
+
+  // Если неавторизованный пользователь, без успешного ответа от сервера смены пароля...
   if (
+    anonymous &&
     !userCurrentLoggedIn &&
     !userCurrentForgotPassServerAnswer &&
-    location === '/reset-password'
+    location.pathname === '/reset-password'
   ) {
-    return <Navigate to='/forgot-password' />;
+    // ...то отправляем его на предыдущую страницу
+    return <Navigate to={from} />;
   }
 
-  if (!userCurrentLoggedIn && (location === '/profile' || location === '/profile/orders')) {
-    return <Navigate to='/login' />;
-  }
-
+  // Если все ок, то рендерим внутреннее содержимое
   return element;
 }
 

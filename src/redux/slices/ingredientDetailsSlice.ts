@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { IngredientsDetailsSlicePropTypes } from '../../utils/types';
 
 const initialState: IngredientsDetailsSlicePropTypes = {
-  ingredientDetails: {},
+  ingredientDetails: null,
   status: 'loading',
 };
 
@@ -11,10 +11,11 @@ export const ingredientsDetailsSlice = createSlice({
   initialState,
   reducers: {
     addIngredientDetails(state, action) {
+      console.log(action.payload);
       state.ingredientDetails = action.payload;
     },
     removeIngredientDetails(state) {
-      state.ingredientDetails = {};
+      state.ingredientDetails = null;
     },
   },
 });

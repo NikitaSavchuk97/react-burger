@@ -18,12 +18,12 @@ import {
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
 import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 function BurgerConstructor(props: BurgerConstructorPropTypes) {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-
+  const location = useLocation();
   const { bunCurrent, ingredientsCurrent, orderCurrentList, orderCurrentInProgress, totalPrice } =
     useSelector((state: any) => state.ingredientsCurrentSlice);
 
@@ -92,7 +92,7 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
         ),
       );
       dispatch(clearOrderList());
-      props.openModal({ type: 'order', id: '' });
+      props.openModal();
     } else {
       navigate('/login');
     }
@@ -147,7 +147,6 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
           <p className='text text_type_main-large pr-4'>{totalPrice}</p>
           <CurrencyIcon type='primary' />
         </div>
-
         <Button
           htmlType='button'
           type='primary'

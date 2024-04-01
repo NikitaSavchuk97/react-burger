@@ -16,7 +16,8 @@ function ProductList(props: ProductListPropTypes) {
     const targetElement = e.target.closest('section');
     const itemData = ingredients.find((item: ItemPropTypes) => item._id === targetElement.id);
     dispatch(addIngredientDetails(itemData));
-    props.openModal({ type: 'ingredient', id: targetElement.id });
+    //props.openModal({ type: 'ingredient', id: targetElement.id });
+    props.openModal();
     navigate(`/ingredient/${targetElement.id}`);
   };
 

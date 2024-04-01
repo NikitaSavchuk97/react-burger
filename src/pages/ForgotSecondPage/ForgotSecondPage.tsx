@@ -4,17 +4,22 @@ import { postResetPass } from '../../redux/actions/postResetPass';
 import { FC, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import useForm from '../../hooks/useForm';
 
 const ForgotSecondPage: FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<any>();
+
   const { requestStatus, userCurrentResetPassServerAnswer } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
-  const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
-  const [keyValue, setKeyValue] = useState('');
-  const [passValue, setPassValue] = useState('');
 
-  const onButtonClick = async () => {
+  const { values, handleChange } = useForm({ key: '', password: '' });
+  const keyValue = values.key;
+  const passValue = values.password;
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     await dispatch(postResetPass({ keyValue, passValue }));
   };
 
@@ -25,13 +30,13 @@ const ForgotSecondPage: FC = () => {
   }, [requestStatus, userCurrentResetPassServerAnswer]);
 
   return (
-    <section className={styles.section}>
+    <form className={styles.section} onSubmit={handleSubmit}>
       <h2 className={`${styles.section__title} text text_type_main-medium`}>
         Восстановление пароля
       </h2>
       <br />
       <PasswordInput
-        onChange={(e) => setPassValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={passValue}
         name={'password'}
         placeholder='password'
@@ -41,9 +46,9 @@ const ForgotSecondPage: FC = () => {
       <Input
         type={'text'}
         placeholder='key'
-        onChange={(e) => setKeyValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={keyValue}
-        name={'name'}
+        name={'key'}
         error={false}
         errorText={'Ошибка'}
         size={'default'}
@@ -51,13 +56,7 @@ const ForgotSecondPage: FC = () => {
       />
       <br />
       <br />
-      <Button
-        onClick={onButtonClick}
-        extraClass={styles.section__button}
-        htmlType='button'
-        type='primary'
-        size='medium'
-      >
+      <Button extraClass={styles.section__button} htmlType='submit' type='primary' size='medium'>
         Восстановить
       </Button>
       <br />
@@ -69,7 +68,7 @@ const ForgotSecondPage: FC = () => {
           Войти
         </Link>
       </h3>
-    </section>
+    </form>
   );
 };
 

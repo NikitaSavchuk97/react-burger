@@ -11,7 +11,7 @@ const ProfilePage: FC = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const onButtonClick = async () => {
+  const handleLogout = async () => {
     await dispatch(postLogoutUser());
     navigate('/login');
   };
@@ -44,7 +44,7 @@ const ProfilePage: FC = () => {
         <br />
         <br />
         <Button
-          onClick={onButtonClick}
+          onClick={handleLogout}
           extraClass={styles.section__links_button}
           htmlType='button'
           type='primary'

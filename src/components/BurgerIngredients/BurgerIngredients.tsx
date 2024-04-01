@@ -3,10 +3,8 @@ import style from './BurgerIngredients.module.scss';
 import { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../redux/actions/getIngredients';
+import { BurgerIngredientsPropTypes } from '../../utils/types';
 
-export interface BurgerIngredientsPropTypes {
-  openModal: ({ type, id }: { type: string; id: string }) => void;
-}
 
 function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   const dispatch = useDispatch<any>();

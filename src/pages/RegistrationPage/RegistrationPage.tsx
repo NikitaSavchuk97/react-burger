@@ -1,5 +1,5 @@
 import styles from './RegistrationPage.module.scss';
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,19 +9,23 @@ import {
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import { postRegisterUser } from '../../redux/actions/postRegisterUser';
+import useForm from '../../hooks/useForm';
 
 const RegistrationPage: FC = () => {
   const navigate = useNavigate();
-  const [nameValue, setNameValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [passValue, setPassValue] = useState('');
   const dispatch = useDispatch<any>();
+
+  const { values, handleChange } = useForm({ name: '', email: '', password: '' });
+  const nameValue = values.name;
+  const emailValue = values.email;
+  const passValue = values.password;
 
   const { userCurrentRegistrSuccessServerAnswer, requestStatus } = useSelector(
     (state: any) => state.userCurrentSlice,
   );
 
-  const onButtonClick = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
     await dispatch(postRegisterUser({ nameValue, emailValue, passValue }));
   };
 
@@ -32,13 +36,13 @@ const RegistrationPage: FC = () => {
   }, [requestStatus, userCurrentRegistrSuccessServerAnswer]);
 
   return (
-    <section className={styles.section}>
+    <form className={styles.section} onSubmit={handleSubmit}>
       <h2 className={`${styles.section__title} text text_type_main-medium`}>Регистрация</h2>
       <br />
       <Input
         type={'text'}
         placeholder='name'
-        onChange={(e) => setNameValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={nameValue}
         name={'name'}
         error={false}
@@ -48,7 +52,7 @@ const RegistrationPage: FC = () => {
       />
       <br />
       <EmailInput
-        onChange={(e) => setEmailValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={emailValue}
         name={'email'}
         placeholder='email'
@@ -56,20 +60,14 @@ const RegistrationPage: FC = () => {
       />
       <br />
       <PasswordInput
-        onChange={(e) => setPassValue(e.target.value)}
+        onChange={(e) => handleChange(e)}
         value={passValue}
         name={'password'}
         placeholder='password'
         extraClass='mb-2'
       />
       <br />
-      <Button
-        onClick={onButtonClick}
-        extraClass={styles.section__button}
-        htmlType='button'
-        type='primary'
-        size='medium'
-      >
+      <Button extraClass={styles.section__button} htmlType='submit' type='primary' size='medium'>
         Зарегистрироваться
       </Button>
       <br />
@@ -81,7 +79,7 @@ const RegistrationPage: FC = () => {
           Войти
         </Link>
       </h3>
-    </section>
+    </form>
   );
 };
 
