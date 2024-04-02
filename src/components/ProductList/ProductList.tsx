@@ -2,12 +2,11 @@ import style from './ProductList.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
 import { ProductListPropTypes, ItemPropTypes } from '../../utils/types';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import DraggableItem from '../DraggableItem/DraggableItem';
 
 function ProductList(props: ProductListPropTypes) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
   const { orderCurrentList } = useSelector((state: any) => state.ingredientsCurrentSlice);
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
@@ -16,9 +15,6 @@ function ProductList(props: ProductListPropTypes) {
     const targetElement = e.target.closest('section');
     const itemData = ingredients.find((item: ItemPropTypes) => item._id === targetElement.id);
     dispatch(addIngredientDetails(itemData));
-    //props.openModal({ type: 'ingredient', id: targetElement.id });
-    props.openModal();
-    navigate(`/ingredient/${targetElement.id}`);
   };
 
   return (

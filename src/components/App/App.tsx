@@ -1,6 +1,5 @@
 import style from './App.module.scss';
 
-import useModal from '../../hooks/useModal';
 import AppHeader from '../AppHeader/AppHeader';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
@@ -11,8 +10,7 @@ import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSli
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useEffect, useState } from 'react';
-import { IngredientPropType, ItemPropTypes } from '../../utils/types';
+import { useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { getIngredients } from '../../redux/actions/getIngredients';
 import LoginPage from '../../pages/LoginPage/LoginPage';
@@ -24,44 +22,18 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import ProfileInputs from '../ProfileInputs/ProfileInputs';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import ProfileOrders from '../ProfileOrders/ProfileOrders';
-
 import { getCurrentUser } from '../../redux/actions/getCurrentUser';
-// почему то не отображается комит в гитхабе
+
 function App() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const location = useLocation();
-  const background = location.state && location.state.background;
+  const background = location.state && location.state.background.pathname;
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
 
-  const { isModalOpen, openModal, closeModal } = useModal();
-  const [modalInfo, setModalInfo] = useState<{
-    title: string | null | undefined;
-    type: string | null | undefined;
-    data?: ItemPropTypes | null;
-  }>({
-    title: null,
-    type: null,
-    data: null,
-  });
-
   const handleCloseModal = () => {
-    //dispatch(removeIngredientDetails());
-    setModalInfo({
-      title: null,
-      type: null,
-      data: null,
-    });
-    closeModal();
     navigate(-1);
-  };
-
-  const handleOpenModal = () => {
-    //{ type, id }: { type?: string; id?: string | number }
-    //const itemData = ingredients.find((item: IngredientPropType) => item._id === id);
-    //const title = type === 'ingredient' ? 'Детали ингридиента' : undefined;
-    //setModalInfo({ title: title, type: type, data: itemData });
-    openModal();
+    dispatch(removeIngredientDetails());
   };
 
   useEffect(() => {
@@ -70,7 +42,7 @@ function App() {
     if (ingredients.length === 0) {
       dispatch(getIngredients());
     }
-  }, []);
+  }, [ingredients.length, dispatch]);
 
   return (
     <section className={`${style.app} pt-10 pb-10`}>
@@ -81,13 +53,12 @@ function App() {
           element={
             <main className={style.app__wrapper}>
               <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients openModal={handleOpenModal} />
-                <BurgerConstructor openModal={handleOpenModal} />
+                <BurgerIngredients />
+                <BurgerConstructor />
               </DndProvider>
             </main>
           }
         />
-
         <Route
           path='/orders'
           element={
@@ -96,7 +67,6 @@ function App() {
             </CenterElements>
           }
         />
-
         <Route
           path='/profile'
           element={
@@ -114,7 +84,6 @@ function App() {
             <Route path=':Id' element={<ProfileOrders />} />
           </Route>
         </Route>
-
         <Route
           path='/login'
           element={
@@ -128,7 +97,6 @@ function App() {
             />
           }
         />
-
         <Route
           path='/register'
           element={
@@ -142,7 +110,6 @@ function App() {
             />
           }
         />
-
         <Route
           path='/forgot-password'
           element={
@@ -156,7 +123,6 @@ function App() {
             />
           }
         />
-
         <Route
           path='/reset-password'
           element={
@@ -168,6 +134,15 @@ function App() {
                 </CenterElements>
               }
             />
+          }
+        />
+
+        <Route
+          path='/feed/:id'
+          element={
+            <Modal title='Детали заказа' closeModal={handleCloseModal}>
+              <OrderDetails />
+            </Modal>
           }
         />
 
@@ -184,30 +159,15 @@ function App() {
       {background && (
         <Routes>
           <Route
-            path='/ingredient/:Id'
+            path='/ingredient/:id'
             element={
               <Modal title='Детали ингредиента' closeModal={handleCloseModal}>
                 <IngredientDetails />
               </Modal>
             }
           />
-
-          {/* <Route
-            path='/order'
-            element={
-              <Modal title='Детали заказа' closeModal={handleCloseModal}>
-                <OrderDetails />
-              </Modal>
-            }
-          /> */}
         </Routes>
       )}
-
-      {/* {isModalOpen && (
-        <Modal title='' closeModal={handleCloseModal}>
-          <OrderDetails />
-        </Modal>
-      )} */}
     </section>
   );
 }

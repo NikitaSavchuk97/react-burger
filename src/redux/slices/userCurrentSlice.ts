@@ -61,7 +61,6 @@ export const userCurrentSlice = createSlice({
         state.requestStatus = 'success';
       })
       .addCase(getCurrentUser.rejected, (state) => {
-        //console.log('error');
         state.requestStatus = 'error';
       })
       .addCase(patchInfoUser.pending, (state) => {
@@ -72,7 +71,6 @@ export const userCurrentSlice = createSlice({
         state.requestStatus = 'success';
       })
       .addCase(patchInfoUser.rejected, (state) => {
-        //console.log('error');
         state.requestStatus = 'error';
       })
       .addCase(postLogoutUser.pending, (state) => {

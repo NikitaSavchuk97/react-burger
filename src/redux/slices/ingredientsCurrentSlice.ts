@@ -6,7 +6,7 @@ const initialState: IngredientsCurrentSlicePropTypes = {
   bunCurrent: [],
   ingredientsCurrent: [],
   orderCurrentList: [],
-  orderCurrentInProgress: {},
+  orderCurrentInProgress: null,
   totalPrice: 0,
   status: 'loading',
 };
@@ -64,7 +64,7 @@ export const ingredientsCurrentSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(postOrderUser.fulfilled, (state, action) => {
-        state.orderCurrentInProgress = action.payload.order.number;
+        state.orderCurrentInProgress = action.payload;
         state.status = 'success';
       })
       .addCase(postOrderUser.rejected, (state) => {

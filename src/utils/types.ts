@@ -24,19 +24,9 @@ export interface ModalOverlayPropTypes {
   closeModal: () => void;
 }
 
-export interface BurgerIngredientsPropTypes {
-  //openModal: ({ type, id }: { type: string; id: string }) => void;
-  openModal: () => void;
-}
-
 export interface ConstructorIngredientsPropTypes {
   ingredient: ItemPropTypes;
   index: number;
-}
-
-export interface BurgerConstructorPropTypes {
-  //openModal: ({ type, id }: { type: string; id: string }) => void;
-  openModal: () => void;
 }
 
 export interface ProductListPropTypes {
@@ -44,8 +34,6 @@ export interface ProductListPropTypes {
   title: string;
   type: string;
   id: string;
-  //openModal: ({ type, id }: { type: string; id: string }) => void;
-  openModal: () => void;
 }
 
 export interface ProductPropType {
@@ -75,7 +63,7 @@ export interface IngredientsCurrentSlicePropTypes {
   bunCurrent: Array<object>;
   ingredientsCurrent: Array<object>;
   orderCurrentList: Array<object>;
-  orderCurrentInProgress: object;
+  orderCurrentInProgress: object | null;
   totalPrice: number;
   status: string;
 }

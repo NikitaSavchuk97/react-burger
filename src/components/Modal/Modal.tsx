@@ -22,7 +22,7 @@ function Modal(props: ModalPropTypes) {
     return () => {
       document.removeEventListener('keydown', handleButtonCloseModal);
     };
-  }, []);
+  }, [handleButtonCloseModal]);
 
   return (
     modalRoot &&

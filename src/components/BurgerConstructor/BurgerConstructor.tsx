@@ -1,5 +1,5 @@
 import style from './BurgerConstructor.module.scss';
-import { BurgerConstructorPropTypes, ItemPropTypes, ProductPropType } from '../../utils/types';
+import { ItemPropTypes, ProductPropType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,14 +18,19 @@ import {
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
 import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function BurgerConstructor(props: BurgerConstructorPropTypes) {
+function BurgerConstructor() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { bunCurrent, ingredientsCurrent, orderCurrentList, orderCurrentInProgress, totalPrice } =
-    useSelector((state: any) => state.ingredientsCurrentSlice);
+  const {
+    bunCurrent,
+    ingredientsCurrent,
+    orderCurrentList,
+    orderCurrentInProgress,
+    totalPrice,
+    status,
+  } = useSelector((state: any) => state.ingredientsCurrentSlice);
 
   const { userCurrentLoggedIn } = useSelector((state: any) => state.userCurrentSlice);
 
@@ -92,11 +97,16 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
         ),
       );
       dispatch(clearOrderList());
-      props.openModal();
     } else {
       navigate('/login');
     }
   };
+
+  useEffect(() => {
+    if (status === 'success' && orderCurrentInProgress !== null) {
+      navigate(`/feed/${orderCurrentInProgress.order.number}`);
+    }
+  }, [status, orderCurrentInProgress, navigate]);
 
   useEffect(() => {
     dispatch(addToOrderList([bunCurrent, bunCurrent, ...ingredientsCurrent]));

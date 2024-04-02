@@ -11,7 +11,6 @@ export const ingredientsDetailsSlice = createSlice({
   initialState,
   reducers: {
     addIngredientDetails(state, action) {
-      console.log(action.payload);
       state.ingredientDetails = action.payload;
     },
     removeIngredientDetails(state) {

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { BASE_URL } from '../store';
+import { instance } from '../store';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getCookie } from '../../utils/getCookie';
 
@@ -14,8 +13,8 @@ export const patchInfoUser = createAsyncThunk(
     emailValue: string;
     passValue: string;
   }) => {
-    const { data } = await axios.patch(
-      `${BASE_URL}/api/auth/user`,
+    const { data } = await instance.patch(
+      `/api/auth/user`,
       {
         name: nameValue,
         email: emailValue,
