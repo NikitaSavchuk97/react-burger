@@ -72,3 +72,12 @@ export interface IngredientsDetailsSlicePropTypes {
   ingredientDetails: object | null;
   status: string;
 }
+
+export interface UserCurrentSlicePropTypes {
+  userCurrentLoggedIn: boolean;
+  userCurrent: object;
+  userCurrentRegistrSuccessServerAnswer: boolean;
+  userCurrentForgotPassServerAnswer: boolean;
+  userCurrentResetPassServerAnswer: boolean;
+  status: string;
+}

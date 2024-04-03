@@ -28,8 +28,9 @@ function App() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const location = useLocation();
-  const background = location.state && location.state.background.pathname;
+  const background = location.state && location.state?.background?.pathname;
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
+  const statusIngredients = useSelector((state: any) => state.ingredientsSlice.status);
 
   const handleCloseModal = () => {
     navigate(-1);
@@ -42,131 +43,138 @@ function App() {
     if (ingredients.length === 0) {
       dispatch(getIngredients());
     }
-  }, [ingredients.length, dispatch]);
+  }, []);
 
   return (
     <section className={`${style.app} pt-10 pb-10`}>
       <AppHeader />
-      <Routes location={background || location}>
-        <Route
-          path='/'
-          element={
-            <main className={style.app__wrapper}>
-              <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </DndProvider>
-            </main>
-          }
-        />
-        <Route
-          path='/orders'
-          element={
-            <CenterElements>
-              <h1>ЛЕНТА ЗАКАЗОВ</h1>
-            </CenterElements>
-          }
-        />
-        <Route
-          path='/profile'
-          element={
-            <ProtectedRoute
+      {statusIngredients !== 'loading' ? (
+        <>
+          <Routes location={background || location}>
+            <Route
+              path='/'
+              element={
+                <main className={style.app__wrapper}>
+                  <DndProvider backend={HTML5Backend}>
+                    <BurgerIngredients />
+                    <BurgerConstructor />
+                  </DndProvider>
+                </main>
+              }
+            />
+            <Route
+              path='/orders'
               element={
                 <CenterElements>
-                  <ProfilePage />
+                  <h1>ЛЕНТА ЗАКАЗОВ</h1>
                 </CenterElements>
               }
             />
-          }
-        >
-          <Route path='' element={<ProfileInputs />} />
-          <Route path='orders' element={<ProfileOrders />}>
-            <Route path=':Id' element={<ProfileOrders />} />
-          </Route>
-        </Route>
-        <Route
-          path='/login'
-          element={
-            <ProtectedRoute
-              anonymous
+            <Route
+              path='/profile'
               element={
-                <CenterElements>
-                  <LoginPage />
-                </CenterElements>
+                <ProtectedRoute
+                  element={
+                    <CenterElements>
+                      <ProfilePage />
+                    </CenterElements>
+                  }
+                />
+              }
+            >
+              <Route path='' element={<ProfileInputs />} />
+              <Route path='orders' element={<ProfileOrders />}>
+                <Route path=':Id' element={<ProfileOrders />} />
+              </Route>
+            </Route>
+            <Route
+              path='/login'
+              element={
+                <ProtectedRoute
+                  anonymous
+                  element={
+                    <CenterElements>
+                      <LoginPage />
+                    </CenterElements>
+                  }
+                />
               }
             />
-          }
-        />
-        <Route
-          path='/register'
-          element={
-            <ProtectedRoute
-              anonymous
+            <Route
+              path='/register'
               element={
-                <CenterElements>
-                  <RegistrationPage />
-                </CenterElements>
+                <ProtectedRoute
+                  anonymous
+                  element={
+                    <CenterElements>
+                      <RegistrationPage />
+                    </CenterElements>
+                  }
+                />
               }
             />
-          }
-        />
-        <Route
-          path='/forgot-password'
-          element={
-            <ProtectedRoute
-              anonymous
+            <Route
+              path='/forgot-password'
               element={
-                <CenterElements>
-                  <ForgotFirstPage />
-                </CenterElements>
+                <ProtectedRoute
+                  anonymous
+                  element={
+                    <CenterElements>
+                      <ForgotFirstPage />
+                    </CenterElements>
+                  }
+                />
               }
             />
-          }
-        />
-        <Route
-          path='/reset-password'
-          element={
-            <ProtectedRoute
-              anonymous
+            <Route
+              path='/reset-password'
               element={
-                <CenterElements>
-                  <ForgotSecondPage />
-                </CenterElements>
+                <ProtectedRoute
+                  anonymous
+                  element={
+                    <CenterElements>
+                      <ForgotSecondPage />
+                    </CenterElements>
+                  }
+                />
               }
             />
-          }
-        />
 
-        <Route
-          path='/feed/:id'
-          element={
-            <Modal title='Детали заказа' closeModal={handleCloseModal}>
-              <OrderDetails />
-            </Modal>
-          }
-        />
+            <Route
+              path='/feed/:id'
+              element={
+                <Modal title='Детали заказа' closeModal={handleCloseModal}>
+                  <OrderDetails />
+                </Modal>
+              }
+            />
 
-        <Route
-          path='/ingredient/:id'
-          element={
-            <CenterElements>
-              <IngredientDetails />
-            </CenterElements>
-          }
-        />
-      </Routes>
-
-      {background && (
-        <Routes>
-          <Route
-            path='/ingredient/:id'
-            element={
-              <Modal title='Детали ингредиента' closeModal={handleCloseModal}>
-                <IngredientDetails />
-              </Modal>
-            }
-          />
-        </Routes>
+            <Route
+              path='/ingredient/:id'
+              element={
+                <CenterElements>
+                  <IngredientDetails />
+                </CenterElements>
+              }
+            />
+          </Routes>
+          {background && (
+            <Routes>
+              <Route
+                path='/ingredient/:id'
+                element={
+                  <Modal title='Детали ингредиента' closeModal={handleCloseModal}>
+                    <IngredientDetails />
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
+        </>
+      ) : (
+        <CenterElements>
+          <h1>ЗАГРУЗКА</h1>
+        </CenterElements>
       )}
     </section>
   );

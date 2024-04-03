@@ -4,7 +4,7 @@ import { IngredientsSlicePropTypes } from '../../utils/types';
 
 const initialState: IngredientsSlicePropTypes = {
   ingredients: [],
-  status: '',
+  status: 'loading',
 };
 
 export const ingredientsSlice = createSlice({
