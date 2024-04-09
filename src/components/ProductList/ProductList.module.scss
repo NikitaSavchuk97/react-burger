@@ -3,4 +3,9 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
   position: relative;
+
+  &__link {
+    text-decoration: none;
+    color: white;
+  }
 }

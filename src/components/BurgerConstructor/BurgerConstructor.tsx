@@ -1,9 +1,9 @@
 import style from './BurgerConstructor.module.scss';
-import { BurgerConstructorPropTypes, ItemPropTypes, ProductPropType } from '../../utils/types';
+import { ItemPropTypes, ProductPropType } from '../../utils/types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
-import { postOrder } from '../../redux/actions/postOrder';
+import { postOrderUser } from '../../redux/actions/postOrderUser';
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -18,12 +18,21 @@ import {
 } from '../../redux/slices/ingredientsCurrentSlice';
 import { useEffect } from 'react';
 import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
+import { useNavigate } from 'react-router-dom';
 
-function BurgerConstructor(props: BurgerConstructorPropTypes) {
+function BurgerConstructor() {
   const dispatch = useDispatch<any>();
+  const navigate = useNavigate();
+  const {
+    bunCurrent,
+    ingredientsCurrent,
+    orderCurrentList,
+    orderCurrentInProgress,
+    totalPrice,
+    status,
+  } = useSelector((state: any) => state.ingredientsCurrentSlice);
 
-  const { bunCurrent, ingredientsCurrent, orderCurrentList, orderCurrentInProgress, totalPrice } =
-    useSelector((state: any) => state.ingredientsCurrentSlice);
+  const { userCurrentLoggedIn } = useSelector((state: any) => state.userCurrentSlice);
 
   const getOrderPrice = () => {
     const mainPrice = orderCurrentList.reduce(
@@ -79,16 +88,25 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
   };
 
   const onOrderClick = async () => {
-    await dispatch(
-      postOrder(
-        orderCurrentList.map((product: ProductPropType) => {
-          return product._id;
-        }),
-      ),
-    );
-    dispatch(clearOrderList());
-    props.openModal({ type: 'order', id: '' });
+    if (userCurrentLoggedIn) {
+      await dispatch(
+        postOrderUser(
+          orderCurrentList.map((product: ProductPropType) => {
+            return product._id;
+          }),
+        ),
+      );
+      dispatch(clearOrderList());
+    } else {
+      navigate('/login');
+    }
   };
+
+  useEffect(() => {
+    if (status === 'success' && orderCurrentInProgress !== null) {
+      navigate(`/feed/${orderCurrentInProgress.order.number}`);
+    }
+  }, [status, orderCurrentInProgress, navigate]);
 
   useEffect(() => {
     dispatch(addToOrderList([bunCurrent, bunCurrent, ...ingredientsCurrent]));
@@ -139,7 +157,6 @@ function BurgerConstructor(props: BurgerConstructorPropTypes) {
           <p className='text text_type_main-large pr-4'>{totalPrice}</p>
           <CurrencyIcon type='primary' />
         </div>
-
         <Button
           htmlType='button'
           type='primary'

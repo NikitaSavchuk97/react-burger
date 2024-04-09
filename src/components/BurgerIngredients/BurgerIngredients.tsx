@@ -1,23 +1,20 @@
 import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
 import { useEffect, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients } from '../../redux/actions/getIngredients';
 
-export interface BurgerIngredientsPropTypes {
-  openModal: ({ type, id }: { type: string; id: string }) => void;
-}
-
-function BurgerIngredients(props: BurgerIngredientsPropTypes) {
+function BurgerIngredients() {
   const dispatch = useDispatch<any>();
-
   const buns = useRef<HTMLInputElement>(null);
   const sauces = useRef<HTMLInputElement>(null);
   const mains = useRef<HTMLInputElement>(null);
-
   const [bunsCoords, setBunsCoords] = useState<number>(320);
   const [saucesCoords, setSaucesCoords] = useState<number>(620);
   const [mainsCoords, setMainsCoords] = useState<number>(340);
+
+  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
+  const ingredientsLocalStorage = JSON.parse(localStorage.getItem('ingredientsLocalStorage')!);
 
   const getListCoords = () => {
     //Пожалуйста, подскажите как нормально реализовать скролл с применением стилей к навигации в зависимости от координат/видимости элемента на странице.
@@ -28,7 +25,12 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
   };
 
   useEffect(() => {
-    dispatch(getIngredients());
+    // if (ingredients.length === 0) {
+    //   dispatch(getIngredients());
+    // }
+    // if (ingredientsLocalStorage === null) {
+    //   dispatch(getIngredients());
+    // }
   }, [dispatch]);
 
   return (
@@ -73,21 +75,9 @@ function BurgerIngredients(props: BurgerIngredientsPropTypes) {
       </nav>
 
       <div className={`${style.section__content}`} onScroll={getListCoords}>
-        <ProductList title='Булки' type='bun' id='bun' refProp={buns} openModal={props.openModal} />
-        <ProductList
-          title='Соусы'
-          type='sauce'
-          id='sauce'
-          refProp={sauces}
-          openModal={props.openModal}
-        />
-        <ProductList
-          title='Начинки'
-          type='main'
-          id='main'
-          refProp={mains}
-          openModal={props.openModal}
-        />
+        <ProductList title='Булки' type='bun' id='bun' refProp={buns} />
+        <ProductList title='Соусы' type='sauce' id='sauce' refProp={sauces} />
+        <ProductList title='Начинки' type='main' id='main' refProp={mains} />
       </div>
     </section>
   );
