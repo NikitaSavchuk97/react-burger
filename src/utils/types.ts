@@ -59,6 +59,10 @@ export interface IngredientsSlicePropTypes {
   status: string;
 }
 
+export interface CenterElementsPropTypes {
+  children: React.ReactNode;
+}
+
 export interface IngredientsCurrentSlicePropTypes {
   bunCurrent: Array<object>;
   ingredientsCurrent: Array<object>;

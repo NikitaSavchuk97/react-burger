@@ -1,7 +1,6 @@
 import style from './OrderDetails.module.scss';
 import doneSvg from '../../images/doneSvg.svg';
 import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
 
 function OrderDetails() {
   const { orderCurrentInProgress } = useSelector((state: any) => state.ingredientsCurrentSlice);

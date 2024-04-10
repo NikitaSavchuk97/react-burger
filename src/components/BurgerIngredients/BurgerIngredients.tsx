@@ -1,20 +1,14 @@
 import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
-import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../redux/actions/getIngredients';
+import { useState, useRef } from 'react';
 
 function BurgerIngredients() {
-  const dispatch = useDispatch<any>();
   const buns = useRef<HTMLInputElement>(null);
   const sauces = useRef<HTMLInputElement>(null);
   const mains = useRef<HTMLInputElement>(null);
   const [bunsCoords, setBunsCoords] = useState<number>(320);
   const [saucesCoords, setSaucesCoords] = useState<number>(620);
   const [mainsCoords, setMainsCoords] = useState<number>(340);
-
-  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
-  const ingredientsLocalStorage = JSON.parse(localStorage.getItem('ingredientsLocalStorage')!);
 
   const getListCoords = () => {
     //Пожалуйста, подскажите как нормально реализовать скролл с применением стилей к навигации в зависимости от координат/видимости элемента на странице.
@@ -23,15 +17,6 @@ function BurgerIngredients() {
     setSaucesCoords(sauces!.current!.getBoundingClientRect().top);
     setMainsCoords(mains!.current!.getBoundingClientRect().top);
   };
-
-  useEffect(() => {
-    // if (ingredients.length === 0) {
-    //   dispatch(getIngredients());
-    // }
-    // if (ingredientsLocalStorage === null) {
-    //   dispatch(getIngredients());
-    // }
-  }, [dispatch]);
 
   return (
     <section className={`${style.section}`}>

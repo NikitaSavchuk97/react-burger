@@ -31,7 +31,7 @@ function App() {
   const background = location.state && location.state?.background?.pathname;
   const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
   const statusIngredients = useSelector((state: any) => state.ingredientsSlice.status);
-
+  console.log(statusIngredients);
   const handleCloseModal = () => {
     navigate(-1);
     dispatch(removeIngredientDetails());
