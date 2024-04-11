@@ -1,32 +1,32 @@
-import styles from './ForgotFirstPage.module.scss';
-import { postForgotPass } from '../../redux/actions/postForgotPass';
-import { useSelector, useDispatch } from 'react-redux';
-import { FC, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/useForm';
+import styles from './ForgotFirstPage.module.scss';
+
+import { FC, useEffect, FormEvent } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { postForgotPass } from '../../redux/actions/postForgotPass';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
+import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const ForgotFirstPage: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
-  const { requestStatus, userCurrentForgotPassServerAnswer } = useSelector(
-    (state: any) => state.userCurrentSlice,
+  const { status, userCurrentForgotPassServerAnswer } = useSelector(
+    (state) => state.userCurrentSlice,
   );
 
   const { values, handleChange } = useForm({ email: '' });
   const emailValue = values.email;
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch(postForgotPass(emailValue));
   };
-
-  useEffect((): any => {
-    if (userCurrentForgotPassServerAnswer === true && requestStatus === 'success') {
+  useEffect(() => {
+    if (userCurrentForgotPassServerAnswer === true && status === 'success') {
       navigate('/reset-password');
     }
-  }, [requestStatus, userCurrentForgotPassServerAnswer]);
+  }, [status, userCurrentForgotPassServerAnswer]);
 
   return (
     <form className={styles.section} onSubmit={handleSubmit}>

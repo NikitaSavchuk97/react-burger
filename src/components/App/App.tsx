@@ -1,37 +1,38 @@
+import Modal from '../Modal/Modal';
 import style from './App.module.scss';
-
 import AppHeader from '../AppHeader/AppHeader';
+import OrderDetails from '../OrderDetails/OrderDetails';
+import LoginPage from '../../pages/LoginPage/LoginPage';
+import ProfileInputs from '../ProfileInputs/ProfileInputs';
+import ProfileOrders from '../ProfileOrders/ProfileOrders';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
+import ProfilePage from '../../pages/ProfilePage/ProfilePage';
+import CenterElements from '../CenterElements/CenterElements';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import ForgotFirstPage from '../../pages/ForgotFirstPage/ForgotFirstPage';
+import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage';
+import ForgotSecondPage from '../../pages/ForgotSecondPage/ForgotSecondPage';
+
+import { FC, useEffect } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useEffect } from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { getIngredients } from '../../redux/actions/getIngredients';
-import LoginPage from '../../pages/LoginPage/LoginPage';
-import CenterElements from '../CenterElements/CenterElements';
-import RegistrationPage from '../../pages/RegistrationPage/RegistrationPage';
-import ForgotFirstPage from '../../pages/ForgotFirstPage/ForgotFirstPage';
-import ForgotSecondPage from '../../pages/ForgotSecondPage/ForgotSecondPage';
-import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
-import ProfileInputs from '../ProfileInputs/ProfileInputs';
-import ProfilePage from '../../pages/ProfilePage/ProfilePage';
-import ProfileOrders from '../ProfileOrders/ProfileOrders';
 import { getCurrentUser } from '../../redux/actions/getCurrentUser';
+import { getIngredients } from '../../redux/actions/getIngredients';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
 
-function App() {
-  const dispatch = useDispatch<any>();
+const App: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { ingredients } = useSelector((state) => state.ingredientsSlice);
   const background = location.state && location.state?.background?.pathname;
-  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
-  const statusIngredients = useSelector((state: any) => state.ingredientsSlice.status);
-  console.log(statusIngredients);
+  const statusIngredients = useSelector((state) => state.ingredientsSlice.status);
+
   const handleCloseModal = () => {
     navigate(-1);
     dispatch(removeIngredientDetails());
@@ -40,7 +41,7 @@ function App() {
   useEffect(() => {
     dispatch(getCurrentUser());
 
-    if (ingredients.length === 0) {
+    if (ingredients === null) {
       dispatch(getIngredients());
     }
   }, []);
@@ -178,6 +179,6 @@ function App() {
       )}
     </section>
   );
-}
+};
 
 export default App;

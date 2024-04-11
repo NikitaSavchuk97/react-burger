@@ -1,39 +1,40 @@
+import useForm from '../../hooks/useForm';
 import styles from './RegistrationPage.module.scss';
-import { FC, useEffect } from 'react';
+
+import { FC, useEffect, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
+import { postRegisterUser } from '../../redux/actions/postRegisterUser';
 import {
   EmailInput,
   PasswordInput,
   Button,
   Input,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { postRegisterUser } from '../../redux/actions/postRegisterUser';
-import useForm from '../../hooks/useForm';
 
 const RegistrationPage: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
   const { values, handleChange } = useForm({ name: '', email: '', password: '' });
   const nameValue = values.name;
   const emailValue = values.email;
   const passValue = values.password;
 
-  const { userCurrentRegistrSuccessServerAnswer, requestStatus } = useSelector(
-    (state: any) => state.userCurrentSlice,
+  const { userCurrentRegistrSuccessServerAnswer, status } = useSelector(
+    (state) => state.userCurrentSlice,
   );
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch(postRegisterUser({ nameValue, emailValue, passValue }));
   };
 
   useEffect(() => {
-    if (userCurrentRegistrSuccessServerAnswer && requestStatus === 'success') {
+    if (userCurrentRegistrSuccessServerAnswer && status === 'success') {
       navigate('/login');
     }
-  }, [requestStatus, userCurrentRegistrSuccessServerAnswer]);
+  }, [status, userCurrentRegistrSuccessServerAnswer]);
 
   return (
     <form className={styles.section} onSubmit={handleSubmit}>

@@ -3,7 +3,7 @@ import { getIngredients } from '../actions/getIngredients';
 import { IngredientsSlicePropTypes } from '../../utils/types';
 
 const initialState: IngredientsSlicePropTypes = {
-  ingredients: [],
+  ingredients: null,
   status: 'loading',
 };
 
@@ -19,7 +19,7 @@ export const ingredientsSlice = createSlice({
     builder
       .addCase(getIngredients.pending, (state) => {
         state.status = 'loading';
-        state.ingredients = [];
+        state.ingredients = null;
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.ingredients = action.payload.data;
@@ -27,11 +27,12 @@ export const ingredientsSlice = createSlice({
         state.status = 'success';
       })
       .addCase(getIngredients.rejected, (state) => {
-        state.ingredients = [];
+        state.ingredients = null;
         state.status = 'error';
       });
   },
 });
 
 export const { setIngredients } = ingredientsSlice.actions;
+
 export default ingredientsSlice.reducer;

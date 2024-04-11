@@ -1,11 +1,8 @@
 import { useState, ChangeEvent } from 'react';
+import { UseFormPropTypes } from '../utils/types';
 
-interface FormValues {
-  [key: string]: string;
-}
-
-function useForm(initialValues: FormValues = {}) {
-  const [values, setValues] = useState<FormValues>(initialValues);
+const useForm = (initialValues: UseFormPropTypes = {}) => {
+  const [values, setValues] = useState<UseFormPropTypes>(initialValues);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
@@ -14,6 +11,6 @@ function useForm(initialValues: FormValues = {}) {
   };
 
   return { values, handleChange, setValues };
-}
+};
 
 export default useForm;

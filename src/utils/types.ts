@@ -1,3 +1,5 @@
+import { RefObject, ReactNode, MouseEventHandler } from 'react';
+
 export interface ItemPropTypes {
   removeId: string;
   calories: number;
@@ -16,7 +18,7 @@ export interface ItemPropTypes {
 
 export interface ModalPropTypes {
   title: string | null | undefined;
-  children: React.ReactNode;
+  children: ReactNode;
   closeModal: () => void;
 }
 
@@ -30,7 +32,7 @@ export interface ConstructorIngredientsPropTypes {
 }
 
 export interface ProductListPropTypes {
-  refProp: any;
+  refProp: RefObject<HTMLElement>;
   title: string;
   type: string;
   id: string;
@@ -51,23 +53,29 @@ export interface DropItemPropTypes {
 export interface DraggableItemPropTypes {
   item: ItemPropTypes;
   amount: number;
-  onItemGrab: (e: any) => void;
+  onItemGrab: MouseEventHandler<HTMLElement>;
 }
 
 export interface IngredientsSlicePropTypes {
-  ingredients: Array<object>;
+  ingredients: Array<ItemPropTypes> | null;
   status: string;
 }
 
 export interface CenterElementsPropTypes {
-  children: React.ReactNode;
+  children: ReactNode;
+}
+
+export interface OrderCurrentInProgressPropTypes {
+  success: boolean;
+  name: string;
+  order: { number: number };
 }
 
 export interface IngredientsCurrentSlicePropTypes {
-  bunCurrent: Array<object>;
-  ingredientsCurrent: Array<object>;
-  orderCurrentList: Array<object>;
-  orderCurrentInProgress: object | null;
+  bunCurrent: ItemPropTypes | null;
+  ingredientsCurrent: Array<ItemPropTypes>;
+  orderCurrentList: Array<ItemPropTypes>;
+  orderCurrentInProgress: OrderCurrentInProgressPropTypes | null;
   totalPrice: number;
   status: string;
 }
@@ -77,9 +85,18 @@ export interface IngredientsDetailsSlicePropTypes {
   status: string;
 }
 
+export interface UseFormPropTypes {
+  [key: string]: string;
+}
+
+export interface ProtectedRoutePropTypes {
+  element: ReactNode;
+  anonymous?: boolean;
+}
+
 export interface UserCurrentSlicePropTypes {
   userCurrentLoggedIn: boolean;
-  userCurrent: object;
+  userCurrent: { name: string; email: string } | null;
   userCurrentRegistrSuccessServerAnswer: boolean;
   userCurrentForgotPassServerAnswer: boolean;
   userCurrentResetPassServerAnswer: boolean;

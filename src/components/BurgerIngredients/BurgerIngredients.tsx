@@ -1,21 +1,23 @@
-import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
-import { useState, useRef } from 'react';
+import ProductList from '../ProductList/ProductList';
 
-function BurgerIngredients() {
+import { useState, useRef, FC } from 'react';
+
+const BurgerIngredients: FC = () => {
   const buns = useRef<HTMLInputElement>(null);
-  const sauces = useRef<HTMLInputElement>(null);
   const mains = useRef<HTMLInputElement>(null);
+  const sauces = useRef<HTMLInputElement>(null);
+
   const [bunsCoords, setBunsCoords] = useState<number>(320);
-  const [saucesCoords, setSaucesCoords] = useState<number>(620);
   const [mainsCoords, setMainsCoords] = useState<number>(340);
+  const [saucesCoords, setSaucesCoords] = useState<number>(620);
 
   const getListCoords = () => {
     //Пожалуйста, подскажите как нормально реализовать скролл с применением стилей к навигации в зависимости от координат/видимости элемента на странице.
     //Пока-что реализовал через юзСтейт, позже, когда будет нормальная реализация - перенесу в редукс.
     setBunsCoords(buns!.current!.getBoundingClientRect().top);
-    setSaucesCoords(sauces!.current!.getBoundingClientRect().top);
     setMainsCoords(mains!.current!.getBoundingClientRect().top);
+    setSaucesCoords(sauces!.current!.getBoundingClientRect().top);
   };
 
   return (
@@ -66,6 +68,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

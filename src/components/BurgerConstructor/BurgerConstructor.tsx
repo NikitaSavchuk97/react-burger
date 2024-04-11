@@ -1,9 +1,13 @@
 import style from './BurgerConstructor.module.scss';
-import { ItemPropTypes, ProductPropType } from '../../utils/types';
-import { useSelector, useDispatch } from 'react-redux';
+import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
+
+import { FC, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 import { postOrderUser } from '../../redux/actions/postOrderUser';
+import { ItemPropTypes, ProductPropType } from '../../utils/types';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -16,13 +20,11 @@ import {
   addIngredientsCurrent,
   setTotalPrice,
 } from '../../redux/slices/ingredientsCurrentSlice';
-import { useEffect } from 'react';
-import ConstructorIngredient from '../ConstructorIngredient/ConstructorIngredient';
-import { useNavigate } from 'react-router-dom';
 
-function BurgerConstructor() {
-  const dispatch = useDispatch<any>();
+const BurgerConstructor: FC = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userCurrentLoggedIn } = useSelector((state) => state.userCurrentSlice);
   const {
     bunCurrent,
     ingredientsCurrent,
@@ -30,9 +32,7 @@ function BurgerConstructor() {
     orderCurrentInProgress,
     totalPrice,
     status,
-  } = useSelector((state: any) => state.ingredientsCurrentSlice);
-
-  const { userCurrentLoggedIn } = useSelector((state: any) => state.userCurrentSlice);
+  } = useSelector((state) => state.ingredientsCurrentSlice);
 
   const getOrderPrice = () => {
     const mainPrice = orderCurrentList.reduce(
@@ -113,14 +113,14 @@ function BurgerConstructor() {
   }, [bunCurrent, ingredientsCurrent, dispatch, orderCurrentInProgress]);
 
   useEffect(() => {
-    if (bunCurrent.length !== 0) {
+    if (bunCurrent !== null) {
       getOrderPrice();
     }
   }, [orderCurrentList]);
 
   return (
     <section className={`${style.section}`} ref={dropBun}>
-      {bunCurrent.length !== 0 ? (
+      {bunCurrent !== null ? (
         <ul className={`${style.section__list}  pl-4 pr-4 `}>
           <li className={`${style.section__item}`}>{getMainBun(bunCurrent, 'top', '(верх)')}</li>
 
@@ -169,6 +169,6 @@ function BurgerConstructor() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerConstructor;

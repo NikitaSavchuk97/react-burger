@@ -1,8 +1,10 @@
-import { ModalOverlayPropTypes } from '../../utils/types';
 import style from './ModalOverlay.module.scss';
 
-function ModalOverlay(props: ModalOverlayPropTypes) {
-  return <section className={style.container} onClick={props.closeModal}></section>;
-}
+import { FC } from 'react';
+import { ModalOverlayPropTypes } from '../../utils/types';
+
+const ModalOverlay: FC<ModalOverlayPropTypes> = ({ closeModal }) => {
+  return <section className={style.container} onClick={closeModal}></section>;
+};
 
 export default ModalOverlay;
