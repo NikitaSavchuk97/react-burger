@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { postOrderUser } from '../actions/postOrderUser';
-import { IngredientsCurrentSlicePropTypes } from '../../utils/types';
+import { IngredientsCurrentSlicePropTypes, ItemPropTypes } from '../../utils/types';
 
 const initialState: IngredientsCurrentSlicePropTypes = {
-  bunCurrent: [],
-  ingredientsCurrent: [],
-  orderCurrentList: [],
-  orderCurrentInProgress: null,
   totalPrice: 0,
+  bunCurrent: null,
   status: 'loading',
+  orderCurrentList: [],
+  ingredientsCurrent: [],
+  orderCurrentInProgress: null,
 };
 
 export const ingredientsCurrentSlice = createSlice({
@@ -22,7 +22,7 @@ export const ingredientsCurrentSlice = createSlice({
       state.orderCurrentList = action.payload;
     },
     clearOrderList(state) {
-      state.bunCurrent = [];
+      state.bunCurrent = null;
       state.ingredientsCurrent = [];
       state.orderCurrentList = [];
       state.totalPrice = 0;
@@ -35,7 +35,7 @@ export const ingredientsCurrentSlice = createSlice({
       });
     },
     removeIngredientsCurrent(state, action) {
-      state.ingredientsCurrent = state.ingredientsCurrent.filter((item: any) => {
+      state.ingredientsCurrent = state.ingredientsCurrent.filter((item: ItemPropTypes) => {
         return item.removeId !== action.payload;
       });
     },
@@ -75,11 +75,12 @@ export const ingredientsCurrentSlice = createSlice({
 
 export const {
   addBunCurrent,
+  setTotalPrice,
   addToOrderList,
   clearOrderList,
   addIngredientsCurrent,
-  removeIngredientsCurrent,
   moveIngredientsCurrent,
-  setTotalPrice,
+  removeIngredientsCurrent,
 } = ingredientsCurrentSlice.actions;
+
 export default ingredientsCurrentSlice.reducer;

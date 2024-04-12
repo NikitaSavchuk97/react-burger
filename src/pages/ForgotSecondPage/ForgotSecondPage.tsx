@@ -1,33 +1,34 @@
-import styles from './ForgotSecondPage.module.scss';
-import { useSelector, useDispatch } from 'react-redux';
-import { postResetPass } from '../../redux/actions/postResetPass';
-import { FC, useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import useForm from '../../hooks/useForm';
+import styles from './ForgotSecondPage.module.scss';
+
+import { FC, useEffect, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { postResetPass } from '../../redux/actions/postResetPass';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
+import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const ForgotSecondPage: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
-  const { requestStatus, userCurrentResetPassServerAnswer } = useSelector(
-    (state: any) => state.userCurrentSlice,
+  const { status, userCurrentResetPassServerAnswer } = useSelector(
+    (state) => state.userCurrentSlice,
   );
 
   const { values, handleChange } = useForm({ key: '', password: '' });
   const keyValue = values.key;
   const passValue = values.password;
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch(postResetPass({ keyValue, passValue }));
   };
 
   useEffect(() => {
-    if (userCurrentResetPassServerAnswer === true && requestStatus === 'success') {
+    if (userCurrentResetPassServerAnswer === true && status === 'success') {
       navigate('/login');
     }
-  }, [requestStatus, userCurrentResetPassServerAnswer]);
+  }, [status, userCurrentResetPassServerAnswer]);
 
   return (
     <form className={styles.section} onSubmit={handleSubmit}>

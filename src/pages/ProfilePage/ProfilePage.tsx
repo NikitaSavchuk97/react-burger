@@ -1,14 +1,15 @@
 import styles from './ProfilePage.module.scss';
+
 import { FC } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDispatch } from '../../hooks/useReduxToolkit';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { postLogoutUser } from '../../redux/actions/postLogoutUser';
-import { useDispatch } from 'react-redux';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const ProfilePage: FC = () => {
   const location = useLocation();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {

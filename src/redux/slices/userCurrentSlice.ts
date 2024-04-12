@@ -1,20 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { patchInfoUser } from '../actions/patchInfoUser';
 import { postResetPass } from '../actions/postResetPass';
 import { postLoginUser } from '../actions/postLoginUser';
-import { postForgotPass } from '../actions/postForgotPass';
-import { postRegisterUser } from '../actions/postRegisterUser';
 import { getCurrentUser } from '../actions/getCurrentUser';
 import { postLogoutUser } from '../actions/postLogoutUser';
-import { patchInfoUser } from '../actions/patchInfoUser';
+import { postForgotPass } from '../actions/postForgotPass';
 import { UserCurrentSlicePropTypes } from '../../utils/types';
+import { postRegisterUser } from '../actions/postRegisterUser';
 
 const initialState: UserCurrentSlicePropTypes = {
-  userCurrentLoggedIn: false,
-  userCurrent: {},
-  userCurrentRegistrSuccessServerAnswer: false,
-  userCurrentForgotPassServerAnswer: false,
-  userCurrentResetPassServerAnswer: false,
   status: 'loading',
+  userCurrent: null,
+  userCurrentLoggedIn: false,
+  userCurrentResetPassServerAnswer: false,
+  userCurrentForgotPassServerAnswer: false,
+  userCurrentRegistrSuccessServerAnswer: false,
 };
 
 export const userCurrentSlice = createSlice({
@@ -70,7 +70,7 @@ export const userCurrentSlice = createSlice({
       })
       .addCase(postLogoutUser.fulfilled, (state) => {
         state.userCurrentLoggedIn = false;
-        state.userCurrent = {};
+        state.userCurrent = null;
         state.status = 'success';
       })
       .addCase(postLogoutUser.rejected, (state) => {

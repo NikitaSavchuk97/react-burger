@@ -1,12 +1,13 @@
+import { FC } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { JSXElementConstructor, useEffect } from 'react';
+import { useSelector } from '../../hooks/useReduxToolkit';
+import { ProtectedRoutePropTypes } from '../../utils/types';
 
-function ProtectedRoute({ element, anonymous = false }: { element: any; anonymous?: boolean }) {
+const ProtectedRoute: FC<ProtectedRoutePropTypes> = ({ element, anonymous = false }) => {
   const location = useLocation();
   const from = location.state?.from || '/';
   const { userCurrentLoggedIn, userCurrentForgotPassServerAnswer } = useSelector(
-    (state: any) => state.userCurrentSlice,
+    (state) => state.userCurrentSlice,
   );
 
   // Если разрешен неавторизованный доступ, а пользователь авторизован...
@@ -33,7 +34,7 @@ function ProtectedRoute({ element, anonymous = false }: { element: any; anonymou
   }
 
   // Если все ок, то рендерим внутреннее содержимое
-  return element;
-}
+  return <>{element}</>;
+};
 
 export default ProtectedRoute;

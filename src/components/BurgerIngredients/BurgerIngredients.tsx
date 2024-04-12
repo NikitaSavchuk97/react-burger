@@ -1,37 +1,24 @@
-import ProductList from '../ProductList/ProductList';
 import style from './BurgerIngredients.module.scss';
-import { useEffect, useState, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients } from '../../redux/actions/getIngredients';
+import ProductList from '../ProductList/ProductList';
 
-function BurgerIngredients() {
-  const dispatch = useDispatch<any>();
+import { useState, useRef, FC } from 'react';
+
+const BurgerIngredients: FC = () => {
   const buns = useRef<HTMLInputElement>(null);
-  const sauces = useRef<HTMLInputElement>(null);
   const mains = useRef<HTMLInputElement>(null);
-  const [bunsCoords, setBunsCoords] = useState<number>(320);
-  const [saucesCoords, setSaucesCoords] = useState<number>(620);
-  const [mainsCoords, setMainsCoords] = useState<number>(340);
+  const sauces = useRef<HTMLInputElement>(null);
 
-  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
-  const ingredientsLocalStorage = JSON.parse(localStorage.getItem('ingredientsLocalStorage')!);
+  const [bunsCoords, setBunsCoords] = useState<number>(320);
+  const [mainsCoords, setMainsCoords] = useState<number>(340);
+  const [saucesCoords, setSaucesCoords] = useState<number>(620);
 
   const getListCoords = () => {
     //Пожалуйста, подскажите как нормально реализовать скролл с применением стилей к навигации в зависимости от координат/видимости элемента на странице.
     //Пока-что реализовал через юзСтейт, позже, когда будет нормальная реализация - перенесу в редукс.
     setBunsCoords(buns!.current!.getBoundingClientRect().top);
-    setSaucesCoords(sauces!.current!.getBoundingClientRect().top);
     setMainsCoords(mains!.current!.getBoundingClientRect().top);
+    setSaucesCoords(sauces!.current!.getBoundingClientRect().top);
   };
-
-  useEffect(() => {
-    // if (ingredients.length === 0) {
-    //   dispatch(getIngredients());
-    // }
-    // if (ingredientsLocalStorage === null) {
-    //   dispatch(getIngredients());
-    // }
-  }, [dispatch]);
 
   return (
     <section className={`${style.section}`}>
@@ -81,6 +68,6 @@ function BurgerIngredients() {
       </div>
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

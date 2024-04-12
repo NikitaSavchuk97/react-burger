@@ -1,16 +1,17 @@
 import style from './ConstructorIngredient.module.scss';
-import { useDispatch } from 'react-redux';
+
+import { useRef, FC } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { useDispatch } from '../../hooks/useReduxToolkit';
+import { ConstructorIngredientsPropTypes, ItemPropTypes } from '../../utils/types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import {
   moveIngredientsCurrent,
   removeIngredientsCurrent,
 } from '../../redux/slices/ingredientsCurrentSlice';
-import { ConstructorIngredientsPropTypes, ItemPropTypes } from '../../utils/types';
-import { useRef, FC } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
 
 const ConstructorIngredient: FC<ConstructorIngredientsPropTypes> = ({ ingredient, index }) => {
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
 
   // Создание ссылки на DOM-элемент
   const ref = useRef<HTMLDivElement>(null);

@@ -1,19 +1,21 @@
 import style from './IngredientDetails.module.scss';
-import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router';
-import { useMemo } from 'react';
 
-function IngredientDetails() {
+import { FC, useMemo } from 'react';
+import { useLocation } from 'react-router';
+import { ItemPropTypes } from '../../utils/types';
+import { useSelector } from '../../hooks/useReduxToolkit';
+
+const IngredientDetails: FC = () => {
   const params = useLocation().pathname.split('/ingredient/')[1];
 
-  const { ingredientDetails } = useSelector((state: any) => state.ingredientDetailsSlice);
-  const { ingredients } = useSelector((state: any) => state.ingredientsSlice);
+  const { ingredientDetails } = useSelector((state) => state.ingredientDetailsSlice);
+  const { ingredients } = useSelector((state) => state.ingredientsSlice);
 
   const current = useMemo(() => {
     if (ingredientDetails !== null) {
-      return ingredientDetails;
+      return ingredientDetails as ItemPropTypes;
     } else if (params && ingredients && ingredients.length > 0) {
-      return ingredients.find((i: any) => i._id === params);
+      return ingredients.find((item: ItemPropTypes) => item._id === params) as ItemPropTypes;
     }
     return null;
   }, [ingredients, params, ingredients]);
@@ -52,6 +54,6 @@ function IngredientDetails() {
   ) : (
     <h1>ингредиента с ID:{params} не существует</h1>
   );
-}
+};
 
 export default IngredientDetails;

@@ -1,35 +1,36 @@
+import useForm from '../../hooks/useForm';
 import styles from './LoginPage.module.scss';
-import { FC, useEffect } from 'react';
-import { postLoginUser } from '../../redux/actions/postLoginUser';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { FC, useEffect, FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { postLoginUser } from '../../redux/actions/postLoginUser';
+import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
 import {
   EmailInput,
   PasswordInput,
   Button,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import useForm from '../../hooks/useForm';
 
 const LoginPage: FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
+  const dispatch = useDispatch();
+
+  const { userCurrentLoggedIn, status } = useSelector((state) => state.userCurrentSlice);
+
   const { values, handleChange } = useForm({ email: '', password: '' });
-  const { userCurrentLoggedIn, requestStatus } = useSelector(
-    (state: any) => state.userCurrentSlice,
-  );
   const emailValue = values.email;
   const passValue = values.password;
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await dispatch(postLoginUser({ emailValue, passValue }));
   };
 
   useEffect(() => {
-    if (userCurrentLoggedIn && requestStatus === 'success') {
+    if (userCurrentLoggedIn && status === 'success') {
       navigate('/');
     }
-  }, [requestStatus, userCurrentLoggedIn]);
+  }, [status, userCurrentLoggedIn]);
 
   return (
     <form className={styles.section} onSubmit={handleSubmit}>

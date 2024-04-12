@@ -1,6 +1,6 @@
 import { instance } from '../store';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { getCookie } from '../../utils/getCookie';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const patchInfoUser = createAsyncThunk(
   'userCurrent/patchInfoUser',

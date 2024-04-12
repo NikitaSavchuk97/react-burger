@@ -1,19 +1,10 @@
 import style from './OrderDetails.module.scss';
 import doneSvg from '../../images/doneSvg.svg';
-import { useSelector } from 'react-redux';
-import { useMemo } from 'react';
+
+import { useSelector } from '../../hooks/useReduxToolkit';
 
 function OrderDetails() {
-  const { orderCurrentInProgress } = useSelector((state: any) => state.ingredientsCurrentSlice);
-
-  // const current = useMemo(() => {
-  //   if (orderCurrentInProgress !== null) {
-  //     return orderCurrentInProgress;
-  //   } else if (params && ingredients && ingredients.length > 0) {
-  //     return ingredients.find((i: any) => i._id === params);
-  //   }
-  //   return null;
-  // }, [ingredients, params, ingredients]);
+  const { orderCurrentInProgress } = useSelector((state) => state.ingredientsCurrentSlice);
 
   return orderCurrentInProgress ? (
     <section className={`${style.container}`}>

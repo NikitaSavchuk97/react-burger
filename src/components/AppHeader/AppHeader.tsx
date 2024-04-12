@@ -1,6 +1,8 @@
 import style from './AppHeader.module.scss';
+
+import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/useReduxToolkit';
 import {
   Logo,
   BurgerIcon,
@@ -9,9 +11,9 @@ import {
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function AppHeader() {
+const AppHeader: FC = () => {
   const location = useLocation();
-  const { userCurrentLoggedIn } = useSelector((state: any) => state.userCurrentSlice);
+  const { userCurrentLoggedIn } = useSelector((state) => state.userCurrentSlice);
 
   return (
     <header className={`${style.header}`}>
@@ -68,6 +70,6 @@ function AppHeader() {
       </div>
     </header>
   );
-}
+};
 
 export default AppHeader;

@@ -1,8 +1,9 @@
 import style from './DraggableItem.module.scss';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDrag } from 'react-dnd';
+
 import { FC } from 'react';
+import { useDrag } from 'react-dnd';
 import { DraggableItemPropTypes } from '../../utils/types';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const DraggableItem: FC<DraggableItemPropTypes> = ({ item, amount, onItemGrab }) => {
   const [{ isDrag }, dragRef] = useDrag({
