@@ -23,6 +23,7 @@ import { getIngredients } from '../../redux/actions/getIngredients';
 import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
+import OrdersPage from '../../pages/OrdersPage/OrdersPage';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -62,15 +63,13 @@ const App: FC = () => {
                   </DndProvider>
                 </main>
               }
-            />
-            <Route
-              path='/orders'
-              element={
-                <CenterElements>
-                  <h1>ЛЕНТА ЗАКАЗОВ</h1>
-                </CenterElements>
-              }
-            />
+						/>
+						
+            <Route path='/feed' element={<OrdersPage />}>
+              <Route index element={<ProfileInputs />} />
+              <Route path=':id' element={<ProfileInputs />} />
+            </Route>
+
             <Route
               path='/profile'
               element={
@@ -142,7 +141,7 @@ const App: FC = () => {
             />
 
             <Route
-              path='/feed/:id'
+              path='/current-order/:id'
               element={
                 <Modal title='Детали заказа' closeModal={handleCloseModal}>
                   <OrderDetails />

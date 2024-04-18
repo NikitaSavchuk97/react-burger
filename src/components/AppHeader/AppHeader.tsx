@@ -32,9 +32,9 @@ const AppHeader: FC = () => {
         <Link
           className={`
 					${style.header__link} text text_type_main-default pt-4  pb-4 pl-5
-					${location.pathname === '/orders' ? style.header__link_active : ''}
+					${location.pathname === '/feed' ? style.header__link_active : ''}
 					`}
-          to='/orders'
+          to='/feed'
         >
           <ListIcon type='primary' />
           <span className='pl-2'>Лента заказов</span>
