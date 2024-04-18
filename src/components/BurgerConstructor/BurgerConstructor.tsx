@@ -104,7 +104,7 @@ const BurgerConstructor: FC = () => {
 
   useEffect(() => {
     if (status === 'success' && orderCurrentInProgress !== null) {
-      navigate(`/feed/${orderCurrentInProgress.order.number}`);
+      navigate(`/current-order/${orderCurrentInProgress.order.number}`);
     }
   }, [status, orderCurrentInProgress, navigate]);
 
