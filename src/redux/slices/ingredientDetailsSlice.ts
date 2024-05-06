@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IngredientsDetailsSlicePropTypes } from '../../utils/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { IngredientsDetailsSlicePropTypes, ItemPropTypes } from '../../utils/types';
 
 const initialState: IngredientsDetailsSlicePropTypes = {
   ingredientDetails: null,
@@ -10,7 +10,7 @@ export const ingredientsDetailsSlice = createSlice({
   name: 'ingredientDetails',
   initialState,
   reducers: {
-    addIngredientDetails(state, action) {
+    addIngredientDetails(state, action: PayloadAction<ItemPropTypes>) {
       state.ingredientDetails = action.payload;
     },
     removeIngredientDetails(state) {

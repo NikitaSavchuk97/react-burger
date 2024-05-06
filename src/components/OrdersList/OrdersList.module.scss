@@ -1,0 +1,109 @@
+.list {
+  display: grid;
+  flex-direction: column;
+  align-items: center;
+
+  list-style-type: none;
+  margin: 0;
+  width: 100%;
+  max-width: 600px;
+  height: 900px;
+  padding-top: 11px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    color: white;
+    text-decoration: none;
+
+    height: 150px;
+    width: 96%;
+    background-color: rgb(30, 30, 30);
+    border-radius: 20px;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    transform: none;
+    transition: transform 0.2s ease-in-out;
+
+    cursor: pointer;
+
+    transform: none;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      animation: bounce 0.5s;
+      transform: scale(1.02);
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: scale(1);
+      }
+      30% {
+        transform: scale(1.07);
+      }
+      100% {
+        transform: scale(1.02);
+      }
+    }
+
+    &__info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 0;
+
+      &_id {
+        color: gold;
+      }
+      &_time {
+        margin: 0;
+      }
+
+      &_price {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &_img__list {
+        display: flex;
+        flex-direction: row;
+        list-style-type: none;
+        padding-left: 15px;
+        max-width: 400px;
+        overflow: hidden;
+
+        &_item {
+          display: flex;
+          overflow: hidden;
+          justify-content: center;
+          align-items: center;
+          border-radius: 100%;
+          border: 1px solid rgb(93, 0, 117);
+          background-color: rgb(30, 30, 30);
+
+          margin-left: -15px;
+          min-width: 50px;
+          &_image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+          }
+        }
+      }
+    }
+
+    &_title {
+      margin: 0;
+    }
+  }
+}

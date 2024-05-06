@@ -16,7 +16,6 @@ import {
 import {
   addBunCurrent,
   addToOrderList,
-  clearOrderList,
   addIngredientsCurrent,
   setTotalPrice,
 } from '../../redux/slices/ingredientsCurrentSlice';
@@ -76,7 +75,16 @@ const BurgerConstructor: FC = () => {
     position: 'top' | 'bottom' | undefined,
     descr: string,
   ) => {
-    return (
+    return position === 'bottom' ? (
+      <ConstructorElement
+        text={`${item.name} ${descr}`}
+        type={position}
+        isLocked={true}
+        price={item.price}
+        thumbnail={item.image}
+        extraClass={style.section__item_extra}
+      />
+    ) : (
       <ConstructorElement
         text={`${item.name} ${descr}`}
         type={position}
@@ -96,20 +104,21 @@ const BurgerConstructor: FC = () => {
           }),
         ),
       );
-      dispatch(clearOrderList());
     } else {
       navigate('/login');
     }
   };
 
   useEffect(() => {
-    if (status === 'success' && orderCurrentInProgress !== null) {
-      navigate(`/current-order/${orderCurrentInProgress.order.number}`);
+    if (status === 'loading') {
+      navigate(`/current-order`);
     }
   }, [status, orderCurrentInProgress, navigate]);
 
   useEffect(() => {
-    dispatch(addToOrderList([bunCurrent, bunCurrent, ...ingredientsCurrent]));
+    if (bunCurrent) {
+      dispatch(addToOrderList([bunCurrent, bunCurrent, ...ingredientsCurrent]));
+    }
   }, [bunCurrent, ingredientsCurrent, dispatch, orderCurrentInProgress]);
 
   useEffect(() => {

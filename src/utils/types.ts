@@ -61,6 +61,11 @@ export interface IngredientsSlicePropTypes {
   status: string;
 }
 
+export interface OrdersListsSlicePropTypes {
+  userCurrentOrders: Array<ItemPropTypes> | null;
+  allOrders: Array<ItemPropTypes> | null;
+}
+
 export interface CenterElementsPropTypes {
   children: ReactNode;
 }
@@ -77,11 +82,16 @@ export interface IngredientsCurrentSlicePropTypes {
   orderCurrentList: Array<ItemPropTypes>;
   orderCurrentInProgress: OrderCurrentInProgressPropTypes | null;
   totalPrice: number;
-  status: string;
+  status: string | null;
 }
 
 export interface IngredientsDetailsSlicePropTypes {
   ingredientDetails: object | null;
+  status: string;
+}
+export interface OrderDetailsSlicePropTypes {
+  orderDetails: OrderPropTypes | null;
+  uploadedOrderDetails: OrderPropTypes | null;
   status: string;
 }
 
@@ -101,4 +111,116 @@ export interface UserCurrentSlicePropTypes {
   userCurrentForgotPassServerAnswer: boolean;
   userCurrentResetPassServerAnswer: boolean;
   status: string;
+}
+
+export interface OrderPropTypes {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  number: number;
+}
+
+export interface WebSocketPropTypes {
+  socketUserOrders: Array<OrderPropTypes> | null;
+  socketAllOrders: Array<OrderPropTypes> | null;
+  socketTotalOrders: number | null;
+  socketTotalTodayOrders: number | null;
+}
+
+export interface UserPropTypes {
+  email: string;
+  name: string;
+}
+
+export interface GetCurrentUserPropTypes {
+  success: boolean;
+  user: UserPropTypes;
+}
+
+export interface GetCurrentOrderDataPropTypes {
+  success: boolean;
+  orders: OrderPropTypes[];
+}
+
+export interface GetCurrentOrderIdPropTypes {
+  id: string;
+}
+
+export interface PatchInfoUserDataPropTypes {
+  success: boolean;
+  user: UserPropTypes;
+}
+
+export interface PatchInfoUserChangedDataPropTypes {
+  nameValue: string;
+  emailValue: string;
+  passValue: string;
+}
+
+export interface PostForgotPassDataPropTypes {
+  success: boolean;
+  message: string;
+}
+
+export interface PostForgotPassEmailPropTypes {
+  email: string;
+}
+
+export interface PostLoginUserDataPropTypes {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: UserPropTypes;
+}
+
+export interface PostLoginUserValuesPropTypes {
+  emailValue: string;
+  passValue: string;
+}
+
+export interface PostLogoutUserPropTypes {
+  success: boolean;
+  message: string;
+}
+
+export interface PostOrderUserDataPropTypes {
+  success: boolean;
+  order: OrderPropTypes;
+  name: string;
+}
+
+export interface PostRegisterUserDataPropTypes {
+  success: true;
+  user: UserPropTypes;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface PostRegisterUserValuesPropTypes {
+  nameValue: string;
+  emailValue: string;
+  passValue: string;
+}
+
+export interface PostResetPassValuesPropTypes {
+  keyValue: string;
+  passValue: string;
+}
+
+export interface PostResetPassDataPropTypes {
+  success: boolean;
+  message: string;
+}
+
+export interface GetIngredientsPropTypes {
+  success: boolean;
+  data: Array<ItemPropTypes>;
+}
+
+export interface AddIngredientsCurrentPropTypes {
+  item: ItemPropTypes;
+  removeId: string;
 }

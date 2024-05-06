@@ -1,10 +1,14 @@
 import Modal from '../Modal/Modal';
 import style from './App.module.scss';
+import Loader from '../Loader/Loader';
 import AppHeader from '../AppHeader/AppHeader';
+import OrdersFeed from '../OrdersFeed/OrdersFeed';
+import OrdersList from '../OrdersList/OrdersList';
+import OrderCurrent from '../OrderCurrent/OrderCurrent';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import LoginPage from '../../pages/LoginPage/LoginPage';
 import ProfileInputs from '../ProfileInputs/ProfileInputs';
-import ProfileOrders from '../ProfileOrders/ProfileOrders';
+import OrdersPage from '../../pages/OrdersPage/OrdersPage';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import ProfilePage from '../../pages/ProfilePage/ProfilePage';
 import CenterElements from '../CenterElements/CenterElements';
@@ -22,35 +26,53 @@ import { getCurrentUser } from '../../redux/actions/getCurrentUser';
 import { getIngredients } from '../../redux/actions/getIngredients';
 import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { clearOrderList } from '../../redux/slices/ingredientsCurrentSlice';
 import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
-import OrdersPage from '../../pages/OrdersPage/OrdersPage';
+import {
+  onCloseAllOrders,
+  onCloseUserOrders,
+  onConnectAllOrders,
+  onConnectUserOrders,
+} from '../../redux/slices/webSocketSlice';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { ingredients } = useSelector((state) => state.ingredientsSlice);
   const background = location.state && location.state?.background?.pathname;
-  const statusIngredients = useSelector((state) => state.ingredientsSlice.status);
+  const { socketAllOrders } = useSelector((state) => state.webSocketSlice);
+  const { ingredients } = useSelector((state) => state.ingredientsSlice);
+  const { userCurrentLoggedIn } = useSelector((state) => state.userCurrentSlice);
 
   const handleCloseModal = () => {
     navigate(-1);
     dispatch(removeIngredientDetails());
+    dispatch(clearOrderList());
   };
 
   useEffect(() => {
     dispatch(getCurrentUser());
+    dispatch(onConnectAllOrders());
 
     if (ingredients === null) {
       dispatch(getIngredients());
     }
-  }, []);
+
+    if (userCurrentLoggedIn) {
+      dispatch(onConnectUserOrders());
+    }
+
+    return () => {
+      dispatch(onCloseAllOrders());
+      dispatch(onCloseUserOrders());
+    };
+  }, [userCurrentLoggedIn]);
 
   return (
     <section className={`${style.app} pt-10 pb-10`}>
       <AppHeader />
-      {statusIngredients !== 'loading' ? (
+      {socketAllOrders ? (
         <>
           <Routes location={background || location}>
             <Route
@@ -63,11 +85,18 @@ const App: FC = () => {
                   </DndProvider>
                 </main>
               }
-						/>
-						
+            />
+
             <Route path='/feed' element={<OrdersPage />}>
-              <Route index element={<ProfileInputs />} />
-              <Route path=':id' element={<ProfileInputs />} />
+              <Route index element={<OrdersFeed />} />
+              <Route
+                path=':id'
+                element={
+                  <CenterElements>
+                    <OrderDetails />
+                  </CenterElements>
+                }
+              />
             </Route>
 
             <Route
@@ -82,11 +111,19 @@ const App: FC = () => {
                 />
               }
             >
-              <Route path='' element={<ProfileInputs />} />
-              <Route path='orders' element={<ProfileOrders />}>
-                <Route path=':Id' element={<ProfileOrders />} />
-              </Route>
+              <Route index element={<ProfileInputs />} />
+              <Route path='orders' element={<OrdersList />} />
             </Route>
+
+            <Route
+              path='/profile/orders/:id'
+              element={
+                <CenterElements>
+                  <OrderDetails />
+                </CenterElements>
+              }
+            />
+
             <Route
               path='/login'
               element={
@@ -141,10 +178,10 @@ const App: FC = () => {
             />
 
             <Route
-              path='/current-order/:id'
+              path='/current-order'
               element={
-                <Modal title='Детали заказа' closeModal={handleCloseModal}>
-                  <OrderDetails />
+                <Modal title='Обработка заказа' closeModal={handleCloseModal}>
+                  <OrderCurrent />
                 </Modal>
               }
             />
@@ -168,12 +205,30 @@ const App: FC = () => {
                   </Modal>
                 }
               />
+
+              <Route
+                path='/feed/:id'
+                element={
+                  <Modal title='Детали заказа' closeModal={handleCloseModal}>
+                    <OrderDetails />
+                  </Modal>
+                }
+              />
+
+              <Route
+                path='/profile/orders/:id'
+                element={
+                  <Modal title='Детали заказа' closeModal={handleCloseModal}>
+                    <OrderDetails />
+                  </Modal>
+                }
+              />
             </Routes>
           )}
         </>
       ) : (
         <CenterElements>
-          <h1>ЗАГРУЗКА</h1>
+          <Loader />
         </CenterElements>
       )}
     </section>

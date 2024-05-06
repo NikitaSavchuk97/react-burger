@@ -1,0 +1,34 @@
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+
+  &__orders {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    width: 550px;
+    height: 300px;
+  }
+
+  &__counter {
+    text-shadow: 0 0 7px rgb(118, 23, 118), 0 0 14px rgb(118, 23, 118), 0 0 21px rgb(118, 23, 118),
+      0 0 7px rgb(118, 23, 118), 0 0 7px rgb(118, 23, 118), 0 0 92px rgb(118, 23, 118),
+      0 0 28px rgb(118, 23, 118), 0 0 35px rgb(118, 23, 118);
+  }
+}
+
+.list {
+  list-style-type: none;
+  padding: 0;
+
+  &_item {
+    color: aqua;
+  }
+}

@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from '../actions/getIngredients';
-import { IngredientsSlicePropTypes } from '../../utils/types';
+import { GetIngredientsPropTypes, IngredientsSlicePropTypes } from '../../utils/types';
 
 const initialState: IngredientsSlicePropTypes = {
   ingredients: null,
@@ -10,29 +10,26 @@ const initialState: IngredientsSlicePropTypes = {
 export const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
-  reducers: {
-    setIngredients(state, action) {
-      state.ingredients = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getIngredients.pending, (state) => {
         state.status = 'loading';
         state.ingredients = null;
       })
-      .addCase(getIngredients.fulfilled, (state, action) => {
-        state.ingredients = action.payload.data;
-        localStorage.setItem('ingredientsLocalStorage', JSON.stringify(action.payload.data));
-        state.status = 'success';
-      })
+      .addCase(
+        getIngredients.fulfilled,
+        (state, action: PayloadAction<GetIngredientsPropTypes>) => {
+          state.ingredients = action.payload.data;
+          localStorage.setItem('ingredientsLocalStorage', JSON.stringify(action.payload.data));
+          state.status = 'success';
+        },
+      )
       .addCase(getIngredients.rejected, (state) => {
         state.ingredients = null;
         state.status = 'error';
       });
   },
 });
-
-export const { setIngredients } = ingredientsSlice.actions;
 
 export default ingredientsSlice.reducer;

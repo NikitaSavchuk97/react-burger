@@ -1,11 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { postOrderUser } from '../actions/postOrderUser';
-import { IngredientsCurrentSlicePropTypes, ItemPropTypes } from '../../utils/types';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import {
+  AddIngredientsCurrentPropTypes,
+  IngredientsCurrentSlicePropTypes,
+  ItemPropTypes,
+  PostOrderUserDataPropTypes,
+} from '../../utils/types';
 
 const initialState: IngredientsCurrentSlicePropTypes = {
   totalPrice: 0,
   bunCurrent: null,
-  status: 'loading',
+  status: null,
   orderCurrentList: [],
   ingredientsCurrent: [],
   orderCurrentInProgress: null,
@@ -15,10 +20,10 @@ export const ingredientsCurrentSlice = createSlice({
   name: 'ingredientsCurrent',
   initialState,
   reducers: {
-    addBunCurrent(state, action) {
+    addBunCurrent(state, action: PayloadAction<ItemPropTypes>) {
       state.bunCurrent = action.payload;
     },
-    addToOrderList(state, action) {
+    addToOrderList(state, action: PayloadAction<Array<ItemPropTypes>>) {
       state.orderCurrentList = action.payload;
     },
     clearOrderList(state) {
@@ -26,20 +31,24 @@ export const ingredientsCurrentSlice = createSlice({
       state.ingredientsCurrent = [];
       state.orderCurrentList = [];
       state.totalPrice = 0;
-      state.status = 'loading';
+      state.status = null;
+      state.orderCurrentInProgress = null;
     },
-    addIngredientsCurrent(state, action) {
+    addIngredientsCurrent(state, action: PayloadAction<AddIngredientsCurrentPropTypes>) {
       state.ingredientsCurrent.push({
         ...action.payload.item,
         removeId: action.payload.removeId,
       });
     },
-    removeIngredientsCurrent(state, action) {
+    removeIngredientsCurrent(state, action: PayloadAction<string>) {
       state.ingredientsCurrent = state.ingredientsCurrent.filter((item: ItemPropTypes) => {
         return item.removeId !== action.payload;
       });
     },
-    moveIngredientsCurrent(state, action) {
+    moveIngredientsCurrent(
+      state,
+      action: PayloadAction<{ dragIndex: number; hoverIndex: number }>,
+    ) {
       const { dragIndex, hoverIndex } = action.payload;
       if (
         dragIndex >= 0 &&
@@ -53,7 +62,7 @@ export const ingredientsCurrentSlice = createSlice({
         ];
       }
     },
-    setTotalPrice(state, action) {
+    setTotalPrice(state, action: PayloadAction<number>) {
       state.totalPrice = 0;
       state.totalPrice = action.payload;
     },
@@ -63,10 +72,13 @@ export const ingredientsCurrentSlice = createSlice({
       .addCase(postOrderUser.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(postOrderUser.fulfilled, (state, action) => {
-        state.orderCurrentInProgress = action.payload;
-        state.status = 'success';
-      })
+      .addCase(
+        postOrderUser.fulfilled,
+        (state, action: PayloadAction<PostOrderUserDataPropTypes>) => {
+          state.orderCurrentInProgress = action.payload;
+          state.status = 'success';
+        },
+      )
       .addCase(postOrderUser.rejected, (state) => {
         state.status = 'error';
       });
