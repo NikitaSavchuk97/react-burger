@@ -14,42 +14,46 @@ const webSocketSlice = createSlice({
   reducers: {
     // App WebSocket ================================================
     onConnectAllOrders() {
-      //console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Попытка подключения к серверу');
+      console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Попытка подключения к серверу');
     },
     onErrorAllOrders() {
-      //console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Ошибка при подключении серверу');
+      console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Ошибка при подключении серверу');
     },
     onOpenAllOrders() {
-      //console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Подключено к серверу');
+      console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Подключено к серверу');
     },
     onMessageAllOrders(state, action: PayloadAction<string>) {
-      //console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Получение данных с сервера');
+      console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Получение данных с сервера');
       const data = JSON.parse(action.payload);
       state.socketAllOrders = data.orders;
       state.socketTotalOrders = data.total;
       state.socketTotalTodayOrders = data.totalToday;
     },
-    onCloseAllOrders() {
-      //console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Соединение с сервером закрыто');
+    onCloseAllOrders(state) {
+      console.log('ДАННЫЕ ПРИЛОЖЕНИЯ: Соединение с сервером закрыто');
+      state.socketAllOrders = null;
+      state.socketTotalOrders = null;
+      state.socketTotalTodayOrders = null;
     },
 
     // User WebSocket ================================================
     onConnectUserOrders() {
-      //console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Попытка подключения к серверу');
+      console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Попытка подключения к серверу');
     },
     onErrorUserOrders() {
-      //console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Ошибка при подключении серверу');
+      console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Ошибка при подключении серверу');
     },
     onOpenUserOrders() {
-      //console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Подключено к серверу');
+      console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Подключено к серверу');
     },
     onMessageUserOrders(state, action: PayloadAction<string>) {
-      //console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Получение данных с сервера');
+      console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Получение данных с сервера');
       const data = JSON.parse(action.payload);
-      state.socketUserOrders = data?.orders.reverse();
+      state.socketUserOrders = data?.orders?.reverse();
     },
-    onCloseUserOrders() {
-      //console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Соединение с сервером закрыто');
+    onCloseUserOrders(state) {
+      console.log('ДАННЫЕ ПОЛЬЗОВАТЕЛЯ: Соединение с сервером закрыто');
+      state.socketUserOrders = null;
     },
   },
 });

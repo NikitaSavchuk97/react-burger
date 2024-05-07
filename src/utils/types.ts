@@ -224,3 +224,14 @@ export interface AddIngredientsCurrentPropTypes {
   item: ItemPropTypes;
   removeId: string;
 }
+
+export interface WebSocketActionHandlers {
+  cookieName?: string | undefined;
+  webSocketType?: string;
+  webSocketUrl: string;
+  connectActionType: string;
+  openAction: () => void;
+  errorAction: () => void;
+  messageAction: (data: string) => void;
+  closeAction: () => void;
+}

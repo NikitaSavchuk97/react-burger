@@ -1,17 +1,27 @@
 import Loader from '../Loader/Loader';
 import styles from './OrdersFeed.module.scss';
 import OrdersList from '../OrdersList/OrdersList';
+import CenterElements from '../CenterElements/CenterElements';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { OrderPropTypes } from '../../utils/types';
-import { useSelector } from '../../hooks/useReduxToolkit';
+import { useSelector, useDispatch } from '../../hooks/useReduxToolkit';
+import { onCloseAllOrders, onConnectAllOrders } from '../../redux/slices/webSocketSlice';
 
 const OrdersFeed: FC = () => {
+  const dispatch = useDispatch();
   const { socketAllOrders, socketTotalOrders, socketTotalTodayOrders } = useSelector(
     (state) => state.webSocketSlice,
   );
 
-  return true ? (
+  useEffect(() => {
+    dispatch(onConnectAllOrders());
+    return () => {
+      dispatch(onCloseAllOrders());
+    };
+  }, []);
+
+  return socketAllOrders ? (
     <section className={styles.wrapper}>
       <OrdersList />
       <div className={styles.info}>
@@ -65,7 +75,9 @@ const OrdersFeed: FC = () => {
       </div>
     </section>
   ) : (
-    <Loader />
+    <CenterElements>
+      <Loader />
+    </CenterElements>
   );
 };
 

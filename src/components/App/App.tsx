@@ -28,20 +28,18 @@ import { useDispatch, useSelector } from '../../hooks/useReduxToolkit';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { clearOrderList } from '../../redux/slices/ingredientsCurrentSlice';
 import { removeIngredientDetails } from '../../redux/slices/ingredientDetailsSlice';
-import {
-  onCloseAllOrders,
-  onCloseUserOrders,
-  onConnectAllOrders,
-  onConnectUserOrders,
-} from '../../redux/slices/webSocketSlice';
+
+//import { RootState } from '../../redux/store';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-
   const background = location.state && location.state?.background?.pathname;
-  const { socketAllOrders } = useSelector((state) => state.webSocketSlice);
+
+  //const takeIngredients = (state: RootState) => state.ingredientsSlice;
+	//const { ingredients } = useSelector(takeIngredients);
+	
   const { ingredients } = useSelector((state) => state.ingredientsSlice);
   const { userCurrentLoggedIn } = useSelector((state) => state.userCurrentSlice);
 
@@ -53,26 +51,16 @@ const App: FC = () => {
 
   useEffect(() => {
     dispatch(getCurrentUser());
-    dispatch(onConnectAllOrders());
 
     if (ingredients === null) {
       dispatch(getIngredients());
     }
-
-    if (userCurrentLoggedIn) {
-      dispatch(onConnectUserOrders());
-    }
-
-    return () => {
-      dispatch(onCloseAllOrders());
-      dispatch(onCloseUserOrders());
-    };
   }, [userCurrentLoggedIn]);
 
   return (
     <section className={`${style.app} pt-10 pb-10`}>
       <AppHeader />
-      {socketAllOrders ? (
+      {ingredients ? (
         <>
           <Routes location={background || location}>
             <Route

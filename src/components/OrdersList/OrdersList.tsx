@@ -3,22 +3,32 @@ import styles from './OrdersList.module.scss';
 import CenterElements from '../CenterElements/CenterElements';
 
 import { v4 as uuidv4 } from 'uuid';
-import { FC, MouseEventHandler, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ItemPropTypes, OrderPropTypes } from '../../utils/types';
+import { FC, MouseEventHandler, useEffect, useState } from 'react';
 import { formatOrderDate, reducePrice } from '../../utils/methods';
 import { useSelector, useDispatch } from '../../hooks/useReduxToolkit';
 import { addOrderDetails } from '../../redux/slices/orderDetailsSlice';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { onCloseUserOrders, onConnectUserOrders } from '../../redux/slices/webSocketSlice';
 
 const OrdersList: FC = () => {
   const [orderList, setOrderList] = useState<Array<OrderPropTypes> | null>(null);
-
   const dispatch = useDispatch();
   const location = useLocation();
 
   const { ingredients } = useSelector((state) => state.ingredientsSlice);
+  const { userCurrentLoggedIn } = useSelector((state) => state.userCurrentSlice);
   const { socketAllOrders, socketUserOrders } = useSelector((state) => state.webSocketSlice);
+
+  useEffect(() => {
+    if (userCurrentLoggedIn && location.pathname === '/profile/orders') {
+      dispatch(onConnectUserOrders());
+      return () => {
+        dispatch(onCloseUserOrders());
+      };
+    }
+  }, []);
 
   useEffect(() => {
     if (location.pathname === '/feed') {
@@ -38,7 +48,7 @@ const OrdersList: FC = () => {
 
   return ingredients && orderList !== null ? (
     <ul className={styles.list}>
-      {orderList.map((item: OrderPropTypes) => {
+      {orderList?.map((item: OrderPropTypes) => {
         return (
           <Link
             style={{ textDecoration: 'none' }}

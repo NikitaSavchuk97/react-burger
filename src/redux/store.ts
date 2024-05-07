@@ -9,6 +9,16 @@ import ingredientsCurrentSlice from './slices/ingredientsCurrentSlice';
 import { AnyAction, combineReducers } from 'redux';
 import { ThunkDispatch, configureStore } from '@reduxjs/toolkit';
 import { socketMiddleware } from '../middleware/webSocketMiddleware';
+import {
+  onMessageAllOrders,
+  onOpenAllOrders,
+  onErrorAllOrders,
+  onCloseAllOrders,
+  onOpenUserOrders,
+  onErrorUserOrders,
+  onMessageUserOrders,
+  onCloseUserOrders,
+} from '../redux/slices/webSocketSlice';
 
 export const webSocketUrl: string = 'wss://norma.nomoreparties.space/orders';
 export const instance = axios.create({
@@ -25,12 +35,35 @@ const rootReducer = combineReducers({
   webSocketSlice,
 });
 
-const middleware = (getDefaultMiddleware: any) =>
-  getDefaultMiddleware().concat(socketMiddleware(webSocketUrl));
+const allOrdersHandlers = {
+  webSocketUrl: `${webSocketUrl}/all`,
+  connectActionType: 'webSocket/onConnectAllOrders',
+  openAction: () => store.dispatch(onOpenAllOrders()),
+  errorAction: () => store.dispatch(onErrorAllOrders()),
+  messageAction: (data: string) => store.dispatch(onMessageAllOrders(data)),
+  closeAction: () => store.dispatch(onCloseAllOrders()),
+};
+
+const userOrdersHandlers = {
+  cookieName: 'accessToken',
+  webSocketType: 'userData',
+  webSocketUrl: `${webSocketUrl}?token=`,
+  connectActionType: 'webSocket/onConnectUserOrders',
+  openAction: () => store.dispatch(onOpenUserOrders()),
+  errorAction: () => store.dispatch(onErrorUserOrders()),
+  messageAction: (data: string) => store.dispatch(onMessageUserOrders(data)),
+  closeAction: () => store.dispatch(onCloseUserOrders()),
+};
+
+const middlewares = (getDefaultMiddleware: any) =>
+  getDefaultMiddleware().concat(
+    socketMiddleware(allOrdersHandlers),
+    socketMiddleware(userOrdersHandlers),
+  );
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: middleware,
+  middleware: middlewares,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
