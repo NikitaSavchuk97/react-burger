@@ -20,7 +20,7 @@ const ForgotFirstPage: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await dispatch(postForgotPass(emailValue));
+    await dispatch(postForgotPass({ email: emailValue }));
   };
   useEffect(() => {
     if (userCurrentForgotPassServerAnswer === true && status === 'success') {
@@ -38,8 +38,10 @@ const ForgotFirstPage: FC = () => {
         onChange={(e) => handleChange(e)}
         name={'email'}
         value={emailValue}
+        autoComplete='username'
         placeholder='email'
         isIcon={false}
+        required
       />
       <br />
 

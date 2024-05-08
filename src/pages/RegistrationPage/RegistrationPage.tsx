@@ -56,6 +56,7 @@ const RegistrationPage: FC = () => {
         onChange={(e) => handleChange(e)}
         value={emailValue}
         name={'email'}
+        autoComplete='username'
         placeholder='email'
         isIcon={false}
       />
@@ -64,6 +65,7 @@ const RegistrationPage: FC = () => {
         onChange={(e) => handleChange(e)}
         value={passValue}
         name={'password'}
+        autoComplete='current-password'
         placeholder='password'
         extraClass='mb-2'
       />

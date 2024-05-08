@@ -1,16 +1,36 @@
 .app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   max-width: 1920px;
   width: 100%;
   margin: 0 auto;
   color: white;
 
+  //padding: 10px;
+
   &__wrapper {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding: 0 20px;
 
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
   }
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(114, 17, 114);
+}
+*::-webkit-scrollbar-track {
+  background: rgb(31, 31, 39);
+}
+*::-webkit-scrollbar {
+  width: 10px;
+}
+* {
+  scrollbar-width: thin; /* "auto" или "thin"  */
+  scrollbar-color: rgb(114, 17, 114) rgb(31, 31, 39); /* плашка скролла и дорожка */
 }

@@ -50,17 +50,5 @@
 
     overflow: hidden;
     overflow-y: scroll;
-
-    &::-webkit-scrollbar-thumb {
-      background: rgb(114, 17, 114);
-    }
-
-    &::-webkit-scrollbar-track {
-      background: rgb(31, 31, 39);
-    }
-
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
   }
 }

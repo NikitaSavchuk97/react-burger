@@ -29,11 +29,14 @@ const Modal: FC<ModalPropTypes> = ({ closeModal, title, children }) => {
     createPortal(
       <>
         <ModalOverlay closeModal={handleCloseModal} />
+
         <section className={style.container}>
           <h2 className={`${style.container__title} text text_type_main-large`}>{title}</h2>
+
           <button className={`${style.container__button}`} type='button' onClick={handleCloseModal}>
             <CloseIcon type='primary' />
           </button>
+
           {children}
         </section>
       </>,

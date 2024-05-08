@@ -6,6 +6,7 @@ import { useDispatch } from '../../hooks/useReduxToolkit';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { postLogoutUser } from '../../redux/actions/postLogoutUser';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { onCloseUserOrders } from '../../redux/slices/webSocketSlice';
 
 const ProfilePage: FC = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const ProfilePage: FC = () => {
 
   const handleLogout = async () => {
     await dispatch(postLogoutUser());
+    await dispatch(onCloseUserOrders());
     navigate('/login');
   };
 

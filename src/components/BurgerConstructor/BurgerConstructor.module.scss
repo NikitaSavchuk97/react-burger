@@ -18,13 +18,19 @@
     justify-content: center;
     align-items: center;
     list-style-type: none;
+
+    &_extra {
+      img {
+        transform: rotateX(180deg);
+      }
+    }
   }
 
   &__content {
     display: flex;
     flex-direction: column;
     min-height: 260px;
-    max-height: 440px;
+    max-height: 350px;
     overflow: hidden;
     overflow-y: scroll;
 
