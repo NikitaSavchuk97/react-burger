@@ -7,7 +7,7 @@ export const initialState: IngredientsSlicePropTypes = {
   status: '',
 };
 
-export const ingredientsSlice = createSlice({
+ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {},

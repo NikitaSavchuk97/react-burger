@@ -15,7 +15,7 @@ export const initialState: IngredientsCurrentSlicePropTypes = {
   orderCurrentInProgress: null,
 };
 
-export const ingredientsCurrentSlice = createSlice({
+ const ingredientsCurrentSlice = createSlice({
   name: 'ingredientsCurrent',
   initialState,
   reducers: {

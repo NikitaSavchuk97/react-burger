@@ -1,4 +1,5 @@
 import axios from 'axios';
+import urlConstants from '../utils/urls';
 import webSocketSlice from './slices/webSocketSlice';
 import userCurrentSlice from './slices/userCurrentSlice';
 import ingredientsSlice from './slices/ingredientsSlice';
@@ -20,9 +21,8 @@ import {
   onCloseUserOrders,
 } from '../redux/slices/webSocketSlice';
 
-export const webSocketUrl: string = 'wss://norma.nomoreparties.space/orders';
 export const instance = axios.create({
-  baseURL: 'https://norma.nomoreparties.space',
+  baseURL: urlConstants.serverBaseUrl,
   timeout: 30000,
 });
 
@@ -36,7 +36,7 @@ export const rootReducer = combineReducers({
 });
 
 const allOrdersHandlers = {
-  webSocketUrl: `${webSocketUrl}/all`,
+  webSocketUrl: `${urlConstants.webSocketUrl}/all`,
   connectActionType: 'webSocket/onConnectAllOrders',
   openAction: () => store.dispatch(onOpenAllOrders()),
   errorAction: () => store.dispatch(onErrorAllOrders()),
@@ -47,7 +47,7 @@ const allOrdersHandlers = {
 const userOrdersHandlers = {
   cookieName: 'accessToken',
   webSocketType: 'userData',
-  webSocketUrl: `${webSocketUrl}?token=`,
+  webSocketUrl: `${urlConstants.webSocketUrl}?token=`,
   connectActionType: 'webSocket/onConnectUserOrders',
   openAction: () => store.dispatch(onOpenUserOrders()),
   errorAction: () => store.dispatch(onErrorUserOrders()),
