@@ -6,13 +6,13 @@ import {
   OrderPropTypes,
 } from '../../utils/types';
 
-const initialState: OrderDetailsSlicePropTypes = {
+export const initialState: OrderDetailsSlicePropTypes = {
   orderDetails: null,
   uploadedOrderDetails: null,
   status: '',
 };
 
-export const orderDetailsSlice = createSlice({
+const orderDetailsSlice = createSlice({
   name: 'orderDetails',
   initialState,
   reducers: {

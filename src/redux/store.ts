@@ -26,13 +26,13 @@ export const instance = axios.create({
   timeout: 30000,
 });
 
-const rootReducer = combineReducers({
-  orderDetailsSlice,
-  ingredientsSlice,
-  ingredientsCurrentSlice,
-  ingredientDetailsSlice,
-  userCurrentSlice,
-  webSocketSlice,
+export const rootReducer = combineReducers({
+  orderDetailsSlice: orderDetailsSlice,
+  ingredientsSlice: ingredientsSlice,
+  ingredientsCurrentSlice: ingredientsCurrentSlice,
+  ingredientDetailsSlice: ingredientDetailsSlice,
+  userCurrentSlice: userCurrentSlice,
+  webSocketSlice: webSocketSlice,
 });
 
 const allOrdersHandlers = {

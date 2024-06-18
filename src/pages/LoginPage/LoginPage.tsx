@@ -39,7 +39,7 @@ const LoginPage: FC = () => {
       <EmailInput
         onChange={(e) => handleChange(e)}
         value={values.email}
-        name={'email'}
+        name='email'
         autoComplete='username'
         placeholder='email'
         isIcon={false}
@@ -48,7 +48,7 @@ const LoginPage: FC = () => {
       <PasswordInput
         onChange={(e) => handleChange(e)}
         value={values.password}
-        name={'password'}
+        name='password'
         autoComplete='current-password'
         placeholder='password'
         extraClass='mb-2'

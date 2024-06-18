@@ -1,13 +1,12 @@
 import { postOrderUser } from '../actions/postOrderUser';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import {
-  AddIngredientsCurrentPropTypes,
   IngredientsCurrentSlicePropTypes,
   ItemPropTypes,
   PostOrderUserDataPropTypes,
 } from '../../utils/types';
 
-const initialState: IngredientsCurrentSlicePropTypes = {
+export const initialState: IngredientsCurrentSlicePropTypes = {
   totalPrice: 0,
   bunCurrent: null,
   status: null,
@@ -34,11 +33,8 @@ export const ingredientsCurrentSlice = createSlice({
       state.status = null;
       state.orderCurrentInProgress = null;
     },
-    addIngredientsCurrent(state, action: PayloadAction<AddIngredientsCurrentPropTypes>) {
-      state.ingredientsCurrent.push({
-        ...action.payload.item,
-        removeId: action.payload.removeId,
-      });
+    addIngredientsCurrent(state, action: PayloadAction<ItemPropTypes>) {
+      state.ingredientsCurrent.push(action.payload);
     },
     removeIngredientsCurrent(state, action: PayloadAction<string>) {
       state.ingredientsCurrent = state.ingredientsCurrent.filter((item: ItemPropTypes) => {
