@@ -62,7 +62,12 @@ const ConstructorIngredient: FC<ConstructorIngredientsPropTypes> = ({ ingredient
   };
 
   return (
-    <section className={`${style.section} pr-3`} key={ingredient.removeId} ref={ref}>
+    <section
+      className={`${style.section} pr-3`}
+      id='inner643d69a5c3f7b9001cfa0949'
+      key={ingredient.removeId}
+      ref={ref}
+    >
       <DragIcon type={'primary'} />
       <ConstructorElement
         handleClose={() => handleRemoveIngredient(ingredient.removeId)}

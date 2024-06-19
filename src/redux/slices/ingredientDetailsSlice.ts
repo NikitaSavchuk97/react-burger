@@ -1,12 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IngredientsDetailsSlicePropTypes, ItemPropTypes } from '../../utils/types';
 
-const initialState: IngredientsDetailsSlicePropTypes = {
+export const initialState: IngredientsDetailsSlicePropTypes = {
   ingredientDetails: null,
   status: 'loading',
 };
 
-export const ingredientsDetailsSlice = createSlice({
+const ingredientsDetailsSlice = createSlice({
   name: 'ingredientDetails',
   initialState,
   reducers: {

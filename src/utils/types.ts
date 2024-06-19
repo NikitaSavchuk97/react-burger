@@ -220,11 +220,6 @@ export interface GetIngredientsPropTypes {
   data: Array<ItemPropTypes>;
 }
 
-export interface AddIngredientsCurrentPropTypes {
-  item: ItemPropTypes;
-  removeId: string;
-}
-
 export interface WebSocketActionHandlers {
   cookieName?: string | undefined;
   webSocketType?: string;

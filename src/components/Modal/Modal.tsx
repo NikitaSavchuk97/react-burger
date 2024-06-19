@@ -33,7 +33,12 @@ const Modal: FC<ModalPropTypes> = ({ closeModal, title, children }) => {
         <section className={style.container}>
           <h2 className={`${style.container__title} text text_type_main-large`}>{title}</h2>
 
-          <button className={`${style.container__button}`} type='button' onClick={handleCloseModal}>
+          <button
+            className={`${style.container__button}`}
+            id='close-modal-button'
+            type='button'
+            onClick={handleCloseModal}
+          >
             <CloseIcon type='primary' />
           </button>
 

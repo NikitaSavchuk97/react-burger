@@ -9,7 +9,10 @@ function OrderCurrent() {
 
   return orderCurrentInProgress ? (
     <section className={`${style.container}`}>
-      <h2 className={`${style.container__title} pb-2 text text_type_digits-large`}>
+      <h2
+        className={`${style.container__title} pb-2 text text_type_digits-large`}
+        id='placed-order-number'
+      >
         {orderCurrentInProgress.order.number}
       </h2>
       <h4 className='pb-15 text text_type_main-medium'>идентификатор заказа</h4>

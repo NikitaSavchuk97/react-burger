@@ -62,8 +62,9 @@ const BurgerConstructor: FC = () => {
     }),
     drop: (item: ItemPropTypes) => {
       if (item.type !== 'bun') {
-        const removeId = uuidv4();
-        dispatch(addIngredientsCurrent({ item, removeId }));
+        const rId = uuidv4();
+        const ingredient = { ...item, removeId: rId };
+        dispatch(addIngredientsCurrent(ingredient));
       } else {
         return;
       }
@@ -128,7 +129,7 @@ const BurgerConstructor: FC = () => {
   }, [orderCurrentList]);
 
   return (
-    <section className={`${style.section}`} ref={dropBun}>
+    <section className={`${style.section}`} ref={dropBun} id='constructor-drop-target-bun'>
       {bunCurrent !== null ? (
         <ul className={`${style.section__list}  pl-4 pr-4 `}>
           <li className={`${style.section__item}`}>{getMainBun(bunCurrent, 'top', '(верх)')}</li>
@@ -138,6 +139,7 @@ const BurgerConstructor: FC = () => {
               ingredientsCurrent.length === 0 ? style.section__content__empty : ''
             } mt-4 mb-4`}
             ref={dropIngredients}
+            id='constructor-drop-target-ingredient'
           >
             {ingredientsCurrent.length === 0 ? (
               <h3 className={`${style.section__title}  text text_type_main-large`}>

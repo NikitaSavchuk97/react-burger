@@ -2,12 +2,12 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from '../actions/getIngredients';
 import { GetIngredientsPropTypes, IngredientsSlicePropTypes } from '../../utils/types';
 
-const initialState: IngredientsSlicePropTypes = {
+export const initialState: IngredientsSlicePropTypes = {
   ingredients: null,
-  status: 'loading',
+  status: '',
 };
 
-export const ingredientsSlice = createSlice({
+ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {},
@@ -21,7 +21,7 @@ export const ingredientsSlice = createSlice({
         getIngredients.fulfilled,
         (state, action: PayloadAction<GetIngredientsPropTypes>) => {
           state.ingredients = action.payload.data;
-          localStorage.setItem('ingredientsLocalStorage', JSON.stringify(action.payload.data));
+          //localStorage.setItem('ingredientsLocalStorage', JSON.stringify(action.payload.data));
           state.status = 'success';
         },
       )

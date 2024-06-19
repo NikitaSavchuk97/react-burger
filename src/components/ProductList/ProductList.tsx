@@ -32,7 +32,8 @@ const ProductList: FC<ProductListPropTypes> = (props) => {
         {ingredients &&
           ingredients.map((item: ItemPropTypes) => {
             let amount: number = 0;
-            if (orderCurrentList.length < 2) {
+
+            if (orderCurrentList.length > 1) {
               orderCurrentList.forEach((element: ItemPropTypes) => {
                 if (element._id === item._id) {
                   amount = element.type === 'bun' ? 2 : amount + 1;

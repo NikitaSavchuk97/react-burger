@@ -16,8 +16,8 @@ import {
   UserCurrentSlicePropTypes,
 } from '../../utils/types';
 
-const initialState: UserCurrentSlicePropTypes = {
-  status: 'loading',
+export const initialState: UserCurrentSlicePropTypes = {
+  status: '',
   userCurrent: null,
   userCurrentLoggedIn: false,
   userCurrentResetPassServerAnswer: false,
@@ -25,7 +25,7 @@ const initialState: UserCurrentSlicePropTypes = {
   userCurrentRegistrSuccessServerAnswer: false,
 };
 
-export const userCurrentSlice = createSlice({
+ const userCurrentSlice = createSlice({
   name: 'userCurrent',
   initialState,
   reducers: {},
@@ -85,17 +85,12 @@ export const userCurrentSlice = createSlice({
       .addCase(patchInfoUser.rejected, (state) => {
         state.status = 'error';
       })
-      .addCase(postLogoutUser.pending, (state) => {
-        state.status = 'loading';
-      })
+      .addCase(postLogoutUser.pending, () => {})
       .addCase(postLogoutUser.fulfilled, (state) => {
         state.userCurrentLoggedIn = false;
         state.userCurrent = null;
-        state.status = 'success';
       })
-      .addCase(postLogoutUser.rejected, (state) => {
-        state.status = 'error';
-      })
+      .addCase(postLogoutUser.rejected, () => {})
       .addCase(postForgotPass.pending, (state) => {
         state.status = 'loading';
       })
