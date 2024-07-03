@@ -9,7 +9,7 @@
 
 ## Стек:
 - HTML;
-- CSS | CSS;
+- CSS | SCSS;
 - React;
 - TypeScript;
 - Redux Toolkit;
